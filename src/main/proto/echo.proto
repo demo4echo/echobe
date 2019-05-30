@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.efrat.example.devops.echoServerBEApp.generated.services.echo";
+option java_outer_classname = "EchoProto";
+
+package echo;
+
+// The echo service definition
+service Echo 
+{
+	// Echo something
+	rpc echo (EchoQuery) returns (EchoReply) {}
+}
+
+// The message to be echoed
+message EchoQuery
+{
+	string queryMessage = 1;
+}
+
+// The response message containing the requested echo
+message EchoReply 
+{
+	string replyMessage = 1;
+}
