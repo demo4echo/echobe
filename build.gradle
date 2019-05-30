@@ -32,7 +32,7 @@ plugins
 	id 'org.unbroken-dome.helm-releases' version '0.3.0'
 	
 	// gradle-git-version plugin
-//	id 'com.palantir.git-version' version '0.11.0'
+	id 'com.palantir.git-version' version '0.11.0'
 
 	// ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
 	id 'com.google.protobuf' version '0.8.8'
@@ -269,11 +269,10 @@ task helmTestAndClean(type:Exec) {
 // The function builds a proper version name
 //
 def manifestVersion() {
-//	def details = versionDetails()
+	def details = versionDetails()
 
 	// An alternative (can also be "v0.1.0-demo.${details.branchName}")
-//	return "v0.1.0-${details.branchName}"
-	return "v0.1.0-staging"
+	return "v0.1.0-${details.branchName}"
 }
 
 description = 'The Echo Backend demo product'
