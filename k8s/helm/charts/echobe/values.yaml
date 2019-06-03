@@ -15,7 +15,8 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: NodePort
+#  type: NodePort
+  type: ClusterIP
   port: "${servicePort}"
   targetPort: "${serviceTargetPort}"
   nodePort: ${serviceNodePort}

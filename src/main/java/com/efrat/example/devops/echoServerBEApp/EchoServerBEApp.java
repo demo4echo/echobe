@@ -46,10 +46,11 @@ public class EchoServerBEApp
 		// Get operational port from a designated environment variable
 		String designatedApplicationPort = System.getenv("INTERNAL_PORT_ENV_VAR");
 		
-		/* The port on which the server should run */
+		// Determine the port on which the server should run
 //	    int port = 50051;
-	    int port = (designatedApplicationPort != null && designatedApplicationPort.isEmpty() == false) ? Integer.parseInt(designatedApplicationPort) : DEFAULT_APP_PORT; //tiran
+	    int port = (designatedApplicationPort != null && designatedApplicationPort.isEmpty() == false) ? Integer.parseInt(designatedApplicationPort) : DEFAULT_APP_PORT;
 	    
+	    // Build the server
 	    server = ServerBuilder.forPort(port)
 	        .addService(new EchoService()) // All services go here
 	        .build()

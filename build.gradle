@@ -36,6 +36,9 @@ plugins
 
 	// ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
 	id 'com.google.protobuf' version '0.8.8'
+	
+	// Gradle Spawn Plugin
+	id 'com.wiredforcode.spawn' version '0.8.2'	
 }
  
 // Apply the java plugin to add support for Java
@@ -166,6 +169,24 @@ test {
 		showStandardStreams = true
 		systemProperties = System.properties
 	}
+}
+
+// Special test task meant to run manually outside the cluster (development mode) and since the service isn't published outside
+// the cluster, we'll need kubectl port forwarding
+task testViaPortForwarding(dependsOn: ['startKubectlPortForwarding','test','stopKubectlPortForwarding'])
+
+//
+// Deal with kubectl port-forward blocking command
+//
+
+task startKubectlPortForwarding(type: SpawnProcessTask) {
+	command "kubectl port-forward services/${productName}-service ${productInternalPort}:${productInternalPort}"
+	ready 'Forwarding from'
+//	pidLockFileName '.other.pid.lock'	
+}
+
+task stopKubectlPortForwarding(type: KillProcessTask) {
+//	pidLockFileName '.other.pid.lock'	
 }
 
 //
