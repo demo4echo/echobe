@@ -229,6 +229,14 @@ helm {
 	home = file("$System.env.HOME/.helm")
 	debug = true
 
+//	tiller {
+		// Install/expect Tiller in a different namespace than kube-system
+//		namespace = "custom-namespace"
+
+		// Set a service account for Tiller
+//		serviceAccount = "tiller-service-account"
+//	}
+
 	filtering {
 		// These values will be resolvable in all charts' YAML files (e.g. imageTag => ${productVersion})
 		values.put 'imageTag',"${productVersion}"
