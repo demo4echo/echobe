@@ -17,8 +17,14 @@
  
 plugins
 {
+	// Core functionality
+ 	id 'base'
+ 	
    // Apply the java plugin to add support for Java
 	id 'java'
+
+	// The maven publishing plugin
+//	id 'maven-publish'
 
 	// Apply the eclipse plugin to add support for Eclipse
 	id 'eclipse'
@@ -41,15 +47,61 @@ plugins
 	id 'com.wiredforcode.spawn' version '0.8.2'	
 }
  
-// Apply the java plugin to add support for Java
-//apply plugin: 'java'
+// Adding some properties
+ext {
+	serviceName = "demo4echo"	// For DockerHub registry
+	productName = "echobe"		// e.g. apigw (one of the microservices of the admin portal)
+	productRepository = "${serviceName}/${productName}"
+	productGroup = "com.efrat.${serviceName}"
+//	productVersion = "v0.1.0-feature1"
+//	productVersion = gitVersion()
+	productVersion = manifestVersion()
+	productInternalPort = "3333"
+	productExternalPort = "30333"
+	productK8ShelmChartsFolder = "k8s/helm/charts"
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'jcenter' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+	// Use 'jcenter' for resolving your dependencies.
+	// You can declare any Maven/Ivy/file repository here.
+	jcenter()
 }
+
+// Declaring new configuration that will be used to associate with exported artifacts
+//configurations {
+//	protoFiles
+//}
+
+// Package (zip) artifacts for export
+//task packDist(type: Zip) {
+//	from("src/main") {
+//		include "proto/**"
+//	}
+//}
+
+// Associating the task that produces the artifact with the configuration
+//artifacts {
+	// Configuration name and the task:
+//	protoFiles packDist
+//}
+
+// Handle the export (publishing)
+//publishing {
+//	publications {
+//		mavenProto(MavenPublication) {
+//			groupId = "${productGroup}"
+//			artifactId = "${productName}"
+//			version = "${productVersion}"
+			
+//			artifact packDist
+//		}
+//	}
+	
+//	repositories {
+//		mavenCentral()
+//	}	
+//}
 
 // Updating the version in our release process.
 def grpcVersion = '1.21.0'
@@ -136,19 +188,6 @@ tasks.eclipse.dependsOn << {
     		logger.info("Not able to create %1",resourceDir);
     	}
 	}
-}
-
-// Adding some properties
-ext {
-	serviceName = "demo4echo"	// For DockerHub registry
-	productName = "echobe"		// e.g. apigw (one of the microservices of the admin portal)
-	productRepository = "${serviceName}/${productName}"
-//	productVersion = "v0.1.0-feature1"
-//	productVersion = gitVersion()
-	productVersion = manifestVersion()
-	productInternalPort = "3333"
-	productExternalPort = "30333"
-	productK8ShelmChartsFolder = "k8s/helm/charts"
 }
 
 // Create an uber jar
@@ -306,3 +345,4 @@ def manifestVersion() {
 
 description = 'The Echo Backend demo product'
 version = "${productVersion}"
+group = "${productGroup}"
