@@ -23,9 +23,6 @@ plugins
    // Apply the java plugin to add support for Java
 	id 'java'
 
-	// The maven publishing plugin
-//	id 'maven-publish'
-
 	// Apply the eclipse plugin to add support for Eclipse
 	id 'eclipse'
 
@@ -44,7 +41,7 @@ plugins
 	id 'com.google.protobuf' version '0.8.8'
 	
 	// Gradle Spawn Plugin
-	id 'com.wiredforcode.spawn' version '0.8.2'	
+	id 'com.wiredforcode.spawn' version '0.8.2'
 }
  
 // Adding some properties
@@ -67,41 +64,6 @@ repositories {
 	// You can declare any Maven/Ivy/file repository here.
 	jcenter()
 }
-
-// Declaring new configuration that will be used to associate with exported artifacts
-//configurations {
-//	protoFiles
-//}
-
-// Package (zip) artifacts for export
-//task packDist(type: Zip) {
-//	from("src/main") {
-//		include "proto/**"
-//	}
-//}
-
-// Associating the task that produces the artifact with the configuration
-//artifacts {
-	// Configuration name and the task:
-//	protoFiles packDist
-//}
-
-// Handle the export (publishing)
-//publishing {
-//	publications {
-//		mavenProto(MavenPublication) {
-//			groupId = "${productGroup}"
-//			artifactId = "${productName}"
-//			version = "${productVersion}"
-			
-//			artifact packDist
-//		}
-//	}
-	
-//	repositories {
-//		mavenCentral()
-//	}	
-//}
 
 // Updating the version in our release process.
 def grpcVersion = '1.21.0'
@@ -147,8 +109,8 @@ protobuf {
 sourceSets {
 	main {
 		java {
-			srcDirs 'build/generated/source/proto/main/grpc'
-			srcDirs 'build/generated/source/proto/main/java'
+			srcDirs "${buildDir}/generated/source/proto/main/grpc"
+			srcDirs "${buildDir}/generated/source/proto/main/java"
 		}
 	}
 }
@@ -159,8 +121,6 @@ sourceSets {
  *  (necessary, because every EGradle template MUST be importable out of the box)
  * 
  * ---------------------------------------------------------------------------- */
-// Apply the eclipse plugin to add support for Eclipse
-//apply plugin: 'eclipse'
 
 // To have javadocs in eclipse added - where no sources are available - we need these lines:
 // see https://docs.gradle.org/current/dsl/org.gradle.plugins.ide.eclipse.model.EclipseClasspath.html
@@ -237,7 +197,7 @@ docker {
 	tag "privateRegistry", "${productRepository}:${productVersion}"	// For DockerHub registry
 	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
 	files jar.outputs
-	copySpec.into("build/libs")
+	copySpec.into("${buildDir}/libs")
 //	pull true
 //	noCache true
 }
