@@ -40,14 +40,24 @@ pipeline {
 				sh './gradlew helmUpdate --no-daemon'
 			}
 		}
-		stage('\u277A upgrade \u2728') {//\u1F3F4
+//		stage('\u277A upgrade \u2728') {//\u1F3F4
+//			when {
+//				not {
+//					environment name: 'CLOUD_NAME', value: 'development'
+//				}
+//			}
+//			steps {
+//				sh './gradlew helmUpdate --no-daemon'
+//			}
+//		}
+		stage('\u277A undeploy \u2728') {//\u1F3F3
 			when {
 				not {
 					environment name: 'CLOUD_NAME', value: 'development'
 				}
 			}
 			steps {
-				sh './gradlew helmUpdate --no-daemon'
+				sh './gradlew helmUninstall --no-daemon'
 			}
 		}
 		stage('\u277B verify \u2728') {
@@ -66,6 +76,16 @@ pipeline {
 			}
 			steps {
 				sh './gradlew helmUninstall --no-daemon'
+			}
+		}
+		stage('\u277E deploy \u2728') {//\u1F3F4
+			when {
+				not {
+					environment name: 'CLOUD_NAME', value: 'development'
+				}
+			}
+			steps {
+				sh './gradlew helmUpdate --no-daemon'
 			}
 		}
 	}
