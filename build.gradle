@@ -264,7 +264,12 @@ helm {
 	releases {
 		echobe {
 			from charts.echobe
+
+			// If true, the associated helmDelete task will purge the release, completely removing the release from the store and making its name free for later use
 			purge = true
+
+			// If true, the associated helmInstall task will replace an existing release with the same name (using helm install --replace instead of helm upgrade --install).			
+//			replace = true 
 			
 			// If true, perform a dry run 
 //			dryRun = true
