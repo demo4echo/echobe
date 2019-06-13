@@ -70,25 +70,25 @@ pipeline {
 			}
 		}
 	}
-  	post {
-   	always {
-      	echo 'One way or another, I have finished'
-    	}
-    	success {
-      	echo 'I succeeeded!'
-      	junit 'build/test-results/**/*.xml'
-    	}
-    	unstable {
-      	echo 'I am unstable :/'
-    	}
-    	failure {
-      	echo 'I failed :('
- //     	archiveArtifacts artifacts: 'Jenkinsfile', fingerprint: true
-    	}
-    	changed {
-      	echo 'Things were different before...'
-    	}
-  	}
+	post {
+		always {
+			echo 'One way or another, I have finished'
+		}
+		success {
+			echo 'I succeeeded!'
+			junit 'build/test-results/**/*.xml'
+		}
+		unstable {
+			echo 'I am unstable :/'
+		}
+		failure {
+			echo 'I failed :('
+//			archiveArtifacts artifacts: 'Jenkinsfile', fingerprint: true
+		}
+		changed {
+			echo 'Things were different before...'
+		}
+	}
 }
 
 //
