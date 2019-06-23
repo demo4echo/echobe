@@ -31,8 +31,9 @@ plugins
 	id 'com.palantir.docker-run' version '0.21.0'
 
 	// gradle-helm-plugin plugins
-	id 'org.unbroken-dome.helm' version '0.3.0'
-	id 'org.unbroken-dome.helm-releases' version '0.3.0'
+	id 'org.unbroken-dome.helm' version '0.4.0'
+	id 'org.unbroken-dome.helm-releases' version '0.4.0'
+	id 'org.unbroken-dome.helm-publish' version '0.4.0'
 	
 	// gradle-git-version plugin
 	id 'com.palantir.git-version' version '0.11.0'
@@ -227,6 +228,12 @@ helm {
 	home = file("$System.env.HOME/.helm")
 	debug = true
 
+//	repositories {
+//		inboundEchoCharts {
+//			url = uri(helmChartsPublishingReposChartMuseumUrl)
+//		}
+//	}
+
 	tiller {
 		// Don't install the server
 		install = false
@@ -279,6 +286,15 @@ helm {
 
 			// If true, will wait until all Pods, PVCs, Services, and minimum number of Pods of a Deployment are in a ready state before marking the release as successful
 //			wait = true
+		}		
+	}
+
+	publishing {
+		repositories {
+//			chartMuseum('outboundEchoCharts') {
+			chartMuseum {
+				url = uri(helmChartsPublishingReposChartMuseumUrl)
+			}
 		}
 	}
 }
