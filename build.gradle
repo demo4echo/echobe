@@ -228,11 +228,11 @@ helm {
 	home = file("$System.env.HOME/.helm")
 	debug = true
 
-	repositories {
-		inboundEchoCharts {
-			url = uri(helmChartsPublishingReposChartMuseumUrl)
-		}
-	}
+//	repositories {
+//		inboundEchoCharts {
+//			url = uri(helmChartsPublishingReposChartMuseumUrl)
+//		}
+//	}
 
 	tiller {
 		// Don't install the server
@@ -289,14 +289,14 @@ helm {
 		}		
 	}
 
-	publishing {
-		repositories {
+//	publishing {
+//		repositories {
 //			chartMuseum('outboundEchoCharts') {
-			chartMuseum {
-				url = uri(helmChartsPublishingReposChartMuseumUrl)
-			}
-		}
-	}
+//			chartMuseum {
+//				url = uri(helmChartsPublishingReposChartMuseumUrl)
+//			}
+//		}
+//	}
 }
 
 task helmUpdate(dependsOn: 'helmInstall')
