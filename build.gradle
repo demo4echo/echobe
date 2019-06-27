@@ -322,8 +322,8 @@ task helmTestAndClean(type:Exec) {
 def manifestVersion() {
 	def details = versionDetails()
 
-	// An alternative (can also be "v0.1.0-demo.${details.branchName}")
-	return "v0.1.0-${details.branchName}"
+	// An alternative (can also be "0.1.0-demo.${details.branchName}")
+	return "0.1.0-${details.branchName}"
 }
 
 description = 'The Echo Backend demo product'
