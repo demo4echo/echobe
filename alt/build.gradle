@@ -18,10 +18,13 @@
 plugins
 {
 	// Core functionality
-	id 'base'
+ 	id 'base'
  	
    // Apply the java plugin to add support for Java
 	id 'java'
+
+	// The maven publishing plugin
+//	id 'maven-publish'
 
 	// Apply the eclipse plugin to add support for Eclipse
 	id 'eclipse'
@@ -31,9 +34,8 @@ plugins
 	id 'com.palantir.docker-run' version '0.21.0'
 
 	// gradle-helm-plugin plugins
-	id 'org.unbroken-dome.helm' version '0.4.0'
-	id 'org.unbroken-dome.helm-releases' version '0.4.0'
-	id 'org.unbroken-dome.helm-publish' version '0.4.0'
+	id 'org.unbroken-dome.helm' version '0.3.0'
+	id 'org.unbroken-dome.helm-releases' version '0.3.0'
 	
 	// gradle-git-version plugin
 	id 'com.palantir.git-version' version '0.11.0'
@@ -42,7 +44,7 @@ plugins
 	id 'com.google.protobuf' version '0.8.8'
 	
 	// Gradle Spawn Plugin
-	id 'com.wiredforcode.spawn' version '0.8.2'
+	id 'com.wiredforcode.spawn' version '0.8.2'	
 }
  
 // Adding some properties
@@ -50,6 +52,7 @@ ext {
 	serviceName = "demo4echo"	// For DockerHub registry
 	productName = "echobe"		// e.g. apigw (one of the microservices of the admin portal)
 	productRepository = "${serviceName}/${productName}"
+	productGroup = "com.efrat.${serviceName}"
 //	productVersion = "v0.1.0-feature1"
 //	productVersion = gitVersion()
 	productVersion = manifestVersion()
@@ -64,6 +67,41 @@ repositories {
 	// You can declare any Maven/Ivy/file repository here.
 	jcenter()
 }
+
+// Declaring new configuration that will be used to associate with exported artifacts
+//configurations {
+//	protoFiles
+//}
+
+// Package (zip) artifacts for export
+//task packDist(type: Zip) {
+//	from("src/main") {
+//		include "proto/**"
+//	}
+//}
+
+// Associating the task that produces the artifact with the configuration
+//artifacts {
+	// Configuration name and the task:
+//	protoFiles packDist
+//}
+
+// Handle the export (publishing)
+//publishing {
+//	publications {
+//		mavenProto(MavenPublication) {
+//			groupId = "${productGroup}"
+//			artifactId = "${productName}"
+//			version = "${productVersion}"
+			
+//			artifact packDist
+//		}
+//	}
+	
+//	repositories {
+//		mavenCentral()
+//	}	
+//}
 
 // Updating the version in our release process.
 def grpcVersion = '1.21.0'
@@ -109,8 +147,8 @@ protobuf {
 sourceSets {
 	main {
 		java {
-			srcDirs buildDir.getName() + "/generated/source/proto/main/grpc"
-			srcDirs buildDir.getName() + "/generated/source/proto/main/java"
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
 		}
 	}
 }
@@ -121,6 +159,8 @@ sourceSets {
  *  (necessary, because every EGradle template MUST be importable out of the box)
  * 
  * ---------------------------------------------------------------------------- */
+// Apply the eclipse plugin to add support for Eclipse
+//apply plugin: 'eclipse'
 
 // To have javadocs in eclipse added - where no sources are available - we need these lines:
 // see https://docs.gradle.org/current/dsl/org.gradle.plugins.ide.eclipse.model.EclipseClasspath.html
@@ -197,7 +237,7 @@ docker {
 	tag "privateRegistry", "${productRepository}:${productVersion}"	// For DockerHub registry
 	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
 	files jar.outputs
-	copySpec.into(buildDir.getName() + "/libs")
+	copySpec.into("build/libs")
 //	pull true
 //	noCache true
 }
@@ -228,22 +268,13 @@ helm {
 	home = file("$System.env.HOME/.helm")
 	debug = true
 
-//	repositories {
-//		inboundEchoCharts {
-//			url = uri(helmChartsPublishingReposChartMuseumUrl)
-//		}
-//	}
-
-	tiller {
-		// Don't install the server
-		install = false
-		
+//	tiller {
 		// Install/expect Tiller in a different namespace than kube-system
 //		namespace = "custom-namespace"
 
 		// Set a service account for Tiller
 //		serviceAccount = "tiller-service-account"
-	}
+//	}
 
 	filtering {
 		// These values will be resolvable in all charts' YAML files (e.g. imageTag => ${productVersion})
@@ -271,12 +302,7 @@ helm {
 	releases {
 		echobe {
 			from charts.echobe
-
-			// If true, the associated helmDelete task will purge the release, completely removing the release from the store and making its name free for later use
 			purge = true
-
-			// If true, the associated helmInstall task will replace an existing release with the same name (using helm install --replace instead of helm upgrade --install).			
-//			replace = true 
 			
 			// If true, perform a dry run 
 //			dryRun = true
@@ -286,17 +312,8 @@ helm {
 
 			// If true, will wait until all Pods, PVCs, Services, and minimum number of Pods of a Deployment are in a ready state before marking the release as successful
 //			wait = true
-		}		
+		}
 	}
-
-//	publishing {
-//		repositories {
-//			chartMuseum('outboundEchoCharts') {
-//			chartMuseum {
-//				url = uri(helmChartsPublishingReposChartMuseumUrl)
-//			}
-//		}
-//	}
 }
 
 task helmUpdate(dependsOn: 'helmInstall')
@@ -322,9 +339,10 @@ task helmTestAndClean(type:Exec) {
 def manifestVersion() {
 	def details = versionDetails()
 
-	// An alternative (can also be "0.1.0-demo.${details.branchName}")
-	return "0.1.0-${details.branchName}"
+	// An alternative (can also be "v0.1.0-demo.${details.branchName}")
+	return "v0.1.0-${details.branchName}"
 }
 
 description = 'The Echo Backend demo product'
 version = "${productVersion}"
+group = "${productGroup}"

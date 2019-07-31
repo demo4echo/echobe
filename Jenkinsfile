@@ -12,7 +12,7 @@ pipeline {
 	}
 	environment {
 		// We use this dummy environment variable to load all the properties from the designated file into environment variable (per brach)
-		// This is indeed a pseudo comment for real
+		// This is indeed a pseudo comment for real indeed!!!
 		X_EFRAT_ECHO_ECHOBE_DUMMY_ENV_VAR = assimilateEnvironmentVariables()
 	}
 	stages {
@@ -47,6 +47,7 @@ pipeline {
 				}
 			}
 			steps {
+				sh './gradlew helmUninstall --no-daemon'
 				sh './gradlew helmUpdate --no-daemon'
 			}
 		}
@@ -69,25 +70,25 @@ pipeline {
 			}
 		}
 	}
-  	post {
-   	always {
-      	echo 'One way or another, I have finished'
-    	}
-    	success {
-      	echo 'I succeeeded!'
-      	junit 'build/test-results/**/*.xml'
-    	}
-    	unstable {
-      	echo 'I am unstable :/'
-    	}
-    	failure {
-      	echo 'I failed :('
- //     	archiveArtifacts artifacts: 'Jenkinsfile', fingerprint: true
-    	}
-    	changed {
-      	echo 'Things were different before...'
-    	}
-  	}
+	post {
+		always {
+			echo 'One way or another, I have finished'
+		}
+		success {
+			echo 'I succeeeded!'
+			junit 'build/test-results/**/*.xml'
+		}
+		unstable {
+			echo 'I am unstable :/'
+		}
+		failure {
+			echo 'I failed :('
+//			archiveArtifacts artifacts: 'Jenkinsfile', fingerprint: true
+		}
+		changed {
+			echo 'Things were different before...'
+		}
+	}
 }
 
 //
