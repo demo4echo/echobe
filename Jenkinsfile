@@ -5,6 +5,7 @@ pipeline {
 			label 'jenkins-slave-pod-agent'
 			defaultContainer 'jdk-gradle-docker-k8s-helm'
 			yamlFile 'Jenkinsfile.JenkinsSlaveManifest.yaml'
+			name 'tiran'
 		}
 	}
 	options { 
@@ -101,6 +102,7 @@ def resolveCloudNameByBranchName() {
 		println "Within resolveCloudNameByBranchName() => Node name is: [${env.NODE_NAME}]"
 
 		println "Branch name is: [${env.BRANCH_NAME}]"
+		println "Build tag is: [${env.BUILD_TAG}]"		
 
 		if (env.BRANCH_NAME == 'master') {
 			env.CLOUD_NAME = 'production'
