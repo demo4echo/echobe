@@ -108,7 +108,11 @@ def resolveCloudNameByBranchName() {
 		println "GIT author name is: [${env.GIT_AUTHOR_NAME}]"
 		println "GIT committer email is: [${env.GIT_COMMITTER_EMAIL}]"
 		println "GIT author email is: [${env.GIT_AUTHOR_EMAIL}]"
-
+		
+		println "CHANGE author is: [${env.CHANGE_AUTHOR}]"
+		println "CHANGE author email is: [${env.CHANGE_AUTHOR_EMAIL}]"
+		println "CHANGE author display name is: [${env.CHANGE_AUTHOR_DISPLAY_NAME}]"
+		
 		if (env.BRANCH_NAME == 'master') {
 			env.CLOUD_NAME = 'production'
 		} else if (env.BRANCH_NAME == 'integration') {                 
