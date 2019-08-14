@@ -3,7 +3,6 @@ pipeline {
 		kubernetes {
 			cloud resolveCloudNameByBranchName()
 			label 'jenkins-slave-pod-agent'
-//			label 'tiran'
 			defaultContainer 'jdk-gradle-docker-k8s-helm'
 			yamlFile 'Jenkinsfile.JenkinsSlaveManifest.yaml'
 		}
