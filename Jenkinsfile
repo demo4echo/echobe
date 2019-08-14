@@ -101,7 +101,13 @@ def resolveCloudNameByBranchName() {
 		println "Within resolveCloudNameByBranchName() => Node name is: [${env.NODE_NAME}]"
 
 		println "Branch name is: [${env.BRANCH_NAME}]"
-		println "Build tag is: [${env.BUILD_TAG}]"		
+		println "Build tag is: [${env.BUILD_TAG}]"
+		println "GIT branch is: [${env.GIT_BRANCH}]"
+
+		println "GIT committer name is: [${env.GIT_COMMITTER_NAME}]"
+		println "GIT author name is: [${env.GIT_AUTHOR_NAME}]"
+		println "GIT committer email is: [${env.GIT_COMMITTER_EMAIL}]"
+		println "GIT author email is: [${env.GIT_AUTHOR_EMAIL}]"
 
 		if (env.BRANCH_NAME == 'master') {
 			env.CLOUD_NAME = 'production'
