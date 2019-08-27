@@ -10,7 +10,7 @@ image:
 #  tag: stable
   tag: "${imageTag}"
 #  pullPolicy: IfNotPresent
-   pullPolicy: Always
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
