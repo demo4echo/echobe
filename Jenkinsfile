@@ -5,7 +5,7 @@ pipeline {
 			label 'jenkins-slave-pod-agent'
 			defaultContainer 'jdk-gradle-docker-k8s-helm'
 			yamlFile 'Jenkinsfile.JenkinsSlaveManifest.yaml'
-			namespace 'demo4echo'
+			namespace 'tiran'
 		}
 	}
 	options { 
@@ -54,8 +54,7 @@ pipeline {
 		}
 		stage('\u277B verify \u2728') {
 			steps {
-				sh './gradlew helmTest --no-daemon'
-//				sh './gradlew helmTestAndClean --no-daemon'
+				sh './gradlew helmTestAndClean --no-daemon'
 			}
 		}
 		stage('\u277C test \u2728') {//\u1F321
