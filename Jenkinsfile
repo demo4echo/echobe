@@ -5,6 +5,7 @@ pipeline {
 			label 'jenkins-slave-pod-agent'
 			defaultContainer 'jdk-gradle-docker-k8s-helm'
 			yamlFile 'Jenkinsfile.JenkinsSlaveManifest.yaml'
+			namespace 'tiran'
 		}
 	}
 	options { 
