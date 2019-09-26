@@ -5,6 +5,7 @@ pipeline {
 			label 'jenkins-slave-pod-agent'
 			defaultContainer 'jdk-gradle-docker-k8s-helm'
 			yamlFile 'Jenkinsfile.JenkinsSlaveManifest.yaml'
+//			namespace resolveNamespaceByBranchName()
 		}
 	}
 	options { 
@@ -20,6 +21,11 @@ pipeline {
 			steps {
 				sh 'cp -ar ./.docker /root/.docker'
 				sh 'cp -ar ./.kube /root/.kube'
+
+				script {
+					// Ensure target namespace is resolved
+					resolveNamespaceByBranchName()
+				}
 			}
 		}
 		stage('\u2777 build \u2728') {//\u1F6E0
@@ -69,6 +75,14 @@ pipeline {
 				sh './gradlew helmUninstall --no-daemon'
 			}
 		}
+		stage('\u277E cleanup \u2728') {
+			when {
+				environment name: 'CLOUD_NAME', value: 'development'
+			}
+			steps {
+				sh "kubectl delete namespace ${env.RESOLVED_NAMESPACE}"
+			}
+		}
 	}
 	post {
 		always {
@@ -115,6 +129,30 @@ def resolveCloudNameByBranchName() {
 		
 		// Return the resolved cloud name
 		return env.CLOUD_NAME
+	}
+}
+
+//
+// Determine the namespace the micro service is running in (currently the Jenkins Slave Pod is running in the default namespace)
+//
+def resolveNamespaceByBranchName() {
+	node {
+		println "Within resolveNamespaceByBranchName() => Node name is: [${env.NODE_NAME}]"
+
+		println "Branch name is: [${env.BRANCH_NAME}]"
+
+		// If we are on the production or staging branches return the regular name (e.g. demo4echo), else return the branch namne itself
+		if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'integration') {                 
+			env.RESOLVED_NAMESPACE = 'demo4echo'
+		}
+		else {
+			env.RESOLVED_NAMESPACE = env.BRANCH_NAME
+		}
+		
+		println "Resolved namespace is: [${env.RESOLVED_NAMESPACE}]"
+		
+		// Return the resolved namespsace
+		return env.RESOLVED_NAMESPACE
 	}
 }
 

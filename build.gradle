@@ -165,10 +165,15 @@ jar {
 
 // Make prints in tests visible
 test {
+	systemProperties = System.properties
+
+	// Setup additional environment variables
+	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
+
+	outputs.upToDateWhen {false}
+
 	testLogging {
-		outputs.upToDateWhen {false}
 		showStandardStreams = true
-		systemProperties = System.properties
 	}
 }
 
