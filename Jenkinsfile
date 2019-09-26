@@ -143,7 +143,7 @@ def resolveNamespaceByBranchName() {
 
 		// If we are on the production or staging branches return the regular name (e.g. demo4echo), else return the branch namne itself
 		if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'integration') {                 
-			env.RESOLVED_NAMESPACE = 'demo4echo'
+			env.RESOLVED_NAMESPACE = env.SERVICE_NAME_ENV_VAR
 		}
 		else {
 			env.RESOLVED_NAMESPACE = env.BRANCH_NAME

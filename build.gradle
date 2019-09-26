@@ -44,20 +44,19 @@ plugins
 	// Gradle Spawn Plugin
 	id 'com.wiredforcode.spawn' version '0.8.2'
 }
- 
+
+// Load environment variables
+def envVarsProps = new Properties()
+file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
+
 // Adding some properties
 ext {
-	serviceName = "demo4echo"	// For DockerHub registry
-	productName = "echobe"		// e.g. apigw (one of the microservices of the admin portal)
+	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
 //	productVersion = "v0.1.0-feature1"
 //	productVersion = gitVersion()
 	productVersion = manifestVersion()
-	productInternalPort = "3333"
-	productExternalPort = "30333"
 	productK8ShelmChartsFolder = "k8s/helm/charts"
-	productionBranchName = "master"
-	stagingBranchName = "integration"
 }
 
 // In this section you declare where to find the dependencies of your project
