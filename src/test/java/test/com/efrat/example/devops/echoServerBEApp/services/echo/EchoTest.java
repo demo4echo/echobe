@@ -59,13 +59,16 @@ public class EchoTest
 //		String echobeServicePortAsStr = System.getProperty("com.efrat.echobe.serviceEndPoint.port",DEFAULT_ECHOBE_SERVICE_PORT);
 		String echobeServiceHostAsStr = System.getProperty("com.efrat.echobe.serviceEndPoint.host");
 		String echobeServicePortAsStr = System.getProperty("com.efrat.echobe.serviceEndPoint.port");
+		String echobeServiceNamespaceStr = System.getenv().get("ECHOBE_SERVICE_ENDPOINT_NAMESPACE");
 
 		// Validate we have what we need
 		assertNotNull(echobeServiceHostAsStr);
 		assertNotNull(echobeServicePortAsStr);
-		
+		assertNotNull(echobeServiceNamespaceStr);
+
 //		HelloWorldClient client = new HelloWorldClient("localhost", 50051);
-		EchoServiceFacade client = new EchoServiceFacade(echobeServiceHostAsStr,Integer.parseInt(echobeServicePortAsStr));
+		String echobeServiceName = echobeServiceHostAsStr + "." + echobeServiceNamespaceStr;
+		EchoServiceFacade client = new EchoServiceFacade(echobeServiceName,Integer.parseInt(echobeServicePortAsStr));
 
 		try 
 		{

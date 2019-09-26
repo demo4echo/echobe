@@ -44,17 +44,18 @@ plugins
 	// Gradle Spawn Plugin
 	id 'com.wiredforcode.spawn' version '0.8.2'
 }
- 
+
+// Load environment variables
+def envVarsProps = new Properties()
+file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
+
 // Adding some properties
 ext {
-	serviceName = "demo4echo"	// For DockerHub registry
-	productName = "echobe"		// e.g. apigw (one of the microservices of the admin portal)
+	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
 //	productVersion = "v0.1.0-feature1"
 //	productVersion = gitVersion()
 	productVersion = manifestVersion()
-	productInternalPort = "3333"
-	productExternalPort = "30333"
 	productK8ShelmChartsFolder = "k8s/helm/charts"
 }
 
@@ -163,10 +164,15 @@ jar {
 
 // Make prints in tests visible
 test {
+	systemProperties = System.properties
+
+	// Setup additional environment variables
+	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
+
+	outputs.upToDateWhen {false}
+
 	testLogging {
-		outputs.upToDateWhen {false}
 		showStandardStreams = true
-		systemProperties = System.properties
 	}
 }
 
@@ -272,6 +278,9 @@ helm {
 		echobe {
 			from charts.echobe
 
+			// Namespace to install the release into. Defaults to the current kube config namespace.
+			namespace = manifestNamespace()
+
 			// If true, the associated helmDelete task will purge the release, completely removing the release from the store and making its name free for later use
 			purge = true
 
@@ -324,6 +333,21 @@ def manifestVersion() {
 
 	// An alternative (can also be "0.1.0-demo.${details.branchName}")
 	return "0.1.0-${details.branchName}"
+}
+
+//
+// Construct an applicable namespace to be used by the Helm Chart
+//
+def manifestNamespace() {
+	def details = versionDetails()
+	def namespace = details.branchName 
+
+	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
+	if (details.branchName == "${productionBranchName}" || details.branchName == "${stagingBranchName}") {
+		namespace = serviceName
+	}
+	
+	return namespace
 }
 
 description = 'The Echo Backend demo product'
