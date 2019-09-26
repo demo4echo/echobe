@@ -22,6 +22,8 @@ pipeline {
 				sh 'cp -ar ./.docker /root/.docker'
 				sh 'cp -ar ./.kube /root/.kube'
 
+				sh 'echo tiran'
+
 //				script {
 //					// Ensure target namespace is resolved
 //					resolveNamespaceByBranchName()
