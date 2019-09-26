@@ -22,7 +22,7 @@ pipeline {
 				sh 'cp -ar ./.docker /root/.docker'
 				sh 'cp -ar ./.kube /root/.kube'
 
-				sh 'echo tiran'
+				sh 'sleep 240'
 
 //				script {
 //					// Ensure target namespace is resolved
