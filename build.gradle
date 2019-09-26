@@ -57,6 +57,8 @@ ext {
 //	productVersion = gitVersion()
 	productVersion = manifestVersion()
 	productK8ShelmChartsFolder = "k8s/helm/charts"
+	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
+	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
 }
 
 // In this section you declare where to find the dependencies of your project

@@ -115,14 +115,8 @@ def resolveCloudNameByBranchName() {
 		println "Within resolveCloudNameByBranchName() => Node name is: [${env.NODE_NAME}]"
 
 		println "Branch name is: [${env.BRANCH_NAME}]"
-		println "Build tag is: [${env.BUILD_TAG}]"
-		println "GIT branch is: [${env.GIT_BRANCH}]"
 
-		println "GIT committer name is: [${env.GIT_COMMITTER_NAME}]"
-		println "GIT author name is: [${env.GIT_AUTHOR_NAME}]"
-		println "GIT committer email is: [${env.GIT_COMMITTER_EMAIL}]"
-		println "GIT author email is: [${env.GIT_AUTHOR_EMAIL}]"
-		
+		// Note: don't use ENV VARs here since they can't be read from their file at this stage!
 		if (env.BRANCH_NAME == 'master') {
 			env.CLOUD_NAME = 'production'
 		} else if (env.BRANCH_NAME == 'integration') {                 
@@ -147,9 +141,11 @@ def resolveNamespaceByBranchName() {
 		println "Within resolveNamespaceByBranchName() => Node name is: [${env.NODE_NAME}]"
 
 		println "Branch name is: [${env.BRANCH_NAME}]"
+		println "Production branch name ENV_VAR is: [${env.PRODUCTION_BRANCH_NAME_ENV_VAR}]"
+		println "Staging branch name ENV_VAR is: [${env.STAGING_BRANCH_NAME_ENV_VAR}]"
 
 		// If we are on the production or staging branches return the regular name (e.g. demo4echo), else return the branch namne itself
-		if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'integration') {                 
+		if (env.BRANCH_NAME == env.PRODUCTION_BRANCH_NAME_ENV_VAR || env.BRANCH_NAME == env.STAGING_BRANCH_NAME_ENV_VAR) {                 
 			env.RESOLVED_NAMESPACE = env.SERVICE_NAME_ENV_VAR
 		}
 		else {
