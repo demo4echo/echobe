@@ -22,6 +22,7 @@ pipeline {
 				sh 'cp -ar ./.docker /root/.docker'
 				sh 'cp -ar ./.kube /root/.kube'
 
+				sh 'pwd'
 				sh 'sleep 240'
 
 //				script {
