@@ -30,6 +30,7 @@ pipeline {
 		}
 		stage('\u2777 build \u2728') {//\u1F6E0
 			steps {
+				sh './gradlew -version'
 				sh './gradlew dockerBuildAndPublish --no-daemon'
 			}
 		}
