@@ -22,13 +22,10 @@ pipeline {
 				sh 'cp -ar ./.docker /root/.docker'
 				sh 'cp -ar ./.kube /root/.kube'
 
-				sh 'pwd'
-				sh 'sleep 240'
-
-//				script {
-//					// Ensure target namespace is resolved
-//					resolveNamespaceByBranchName()
-//				}
+				script {
+					// Ensure target namespace is resolved
+					resolveNamespaceByBranchName()
+				}
 			}
 		}
 		stage('\u2777 build \u2728') {//\u1F6E0
