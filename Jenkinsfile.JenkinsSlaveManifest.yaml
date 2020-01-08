@@ -8,6 +8,7 @@ spec:
   containers:
   - name: jdk-gradle-docker-k8s-helm
     image: demo4echo/alpine_openjdk8_k8scdk
+    imagePullPolicy: Always
     command:
     - cat
     tty: true

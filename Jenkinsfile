@@ -59,7 +59,8 @@ pipeline {
 		}
 		stage('\u277B verify \u2728') {
 			steps {
-				sh './gradlew helmTestAndClean --no-daemon'
+//				sh './gradlew helmTestAndClean --no-daemon'
+				sh './gradlew helmTest --no-daemon'
 			}
 		}
 		stage('\u277C test \u2728') {//\u1F321
