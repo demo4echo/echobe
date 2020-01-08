@@ -18,16 +18,16 @@ spec:
     - name: docker-socket
       mountPath: /var/run/docker.sock
     - name: gradle-cache-vol
-      mountPath: /root/.gradle
+      mountPath: $HOME/.gradle
     - name: helm-cache-vol
-      mountPath: /root/.helm
+      mountPath: $HOME/.helm
   volumes:
   - name: docker-socket
     hostPath:
       path: /var/run/docker.sock
   - name: gradle-cache-vol
     hostPath:
-      path: /root/.gradle
+      path: $HOME/.gradle
   - name: helm-cache-vol
     hostPath:
-      path: /root/.helm
+      path: $HOME/.helm
