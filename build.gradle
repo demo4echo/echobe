@@ -83,6 +83,7 @@ dependencies {
 	implementation "io.grpc:grpc-protobuf:${dep_grpc_version}"
 	implementation "io.grpc:grpc-stub:${dep_grpc_version}"
 	compileOnly "javax.annotation:javax.annotation-api:${dep_javax_annotation_version}"
+	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
 // Configure protobuf
