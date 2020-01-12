@@ -30,12 +30,12 @@ pipeline {
 		}
 		stage('\u2777 build \u2728') {//\u1F6E0
 			steps {
-				sh './gradlew dockerBuildAndPublish --no-daemon'
+				sh './gradlew dockerBuildAndPublish'
 			}
 		}
 		stage('\u2778 package \u2728') {//\u1F4E6
 			steps {
-				sh './gradlew helmPackage --no-daemon'
+				sh './gradlew helmPackage'
 			}
 		}
 		stage('\u2779 install \u2728') {//\u1F3F4
@@ -43,7 +43,7 @@ pipeline {
 				environment name: 'CLOUD_NAME', value: 'development'
 			}
 			steps {
-				sh './gradlew helmUpdate --no-daemon'
+				sh './gradlew helmUpdate'
 			}
 		}
 		stage('\u277A upgrade \u2728') {//\u1F3F4
@@ -53,18 +53,18 @@ pipeline {
 				}
 			}
 			steps {
-				sh './gradlew helmUninstall --no-daemon'
-				sh './gradlew helmUpdate --no-daemon'
+				sh './gradlew helmUninstall'
+				sh './gradlew helmUpdate'
 			}
 		}
 		stage('\u277B verify \u2728') {
 			steps {
-				sh './gradlew helmTestAndClean --no-daemon'
+				sh './gradlew helmTestAndClean'
 			}
 		}
 		stage('\u277C certify \u2728') {//\u1F321
 			steps {
-				sh './gradlew certify --no-daemon'
+				sh './gradlew certify'
 			}
 		}
 		stage('\u277D uninstall \u2728') {//\u1F3F3
@@ -72,7 +72,7 @@ pipeline {
 				environment name: 'CLOUD_NAME', value: 'development'
 			}
 			steps {
-				sh './gradlew helmUninstall --no-daemon'
+				sh './gradlew helmUninstall'
 			}
 		}
 		stage('\u277E cleanup \u2728') {
