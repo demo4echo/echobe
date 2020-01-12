@@ -62,9 +62,9 @@ pipeline {
 				sh './gradlew helmTestAndClean --no-daemon'
 			}
 		}
-		stage('\u277C test \u2728') {//\u1F321
+		stage('\u277C certify \u2728') {//\u1F321
 			steps {
-				sh './gradlew test --no-daemon'
+				sh './gradlew certify --no-daemon'
 			}
 		}
 		stage('\u277D uninstall \u2728') {//\u1F3F3
