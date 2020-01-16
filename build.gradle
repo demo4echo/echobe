@@ -26,6 +26,9 @@ plugins
 	// Apply the eclipse plugin to add support for Eclipse
 	id 'eclipse'
 
+	// taskTree plugin
+	id 'com.dorongold.task-tree'
+
 	// gradle-docker plugins
 	id 'com.palantir.docker'
 	id 'com.palantir.docker-run'
@@ -318,12 +321,15 @@ task helmTestAndClean(type:Exec) {
 	args "test","${productName}","--cleanup"
 }
 
+// Can only be used within the cluster as the ecfobe doesn't expose external interfaces
 task certify(dependsOn: 'test')
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
-//task AIO (dependsOn: ['dockerBuildAndPublish','helmPackage','helmUpdate','helmTestAndClean','certify']) // Task 'helmTestAndClean' doesn't run in expected place!
-//task AIO (dependsOn: ['dockerBuildAndPublish','helmPackage','helmUpdate','certify'])
-task AIO (dependsOn: ['dockerBuildAndPublish','helmPackage','helmUpdate']) // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+	helmPackage.mustRunAfter dockerBuildAndPublish
+	helmUpdate.mustRunAfter helmPackage
+	helmTestAndClean.mustRunAfter helmUpdate
+}
 
 // Notes:
 // 1. helmPackge and helmInstall tasks are used as is
