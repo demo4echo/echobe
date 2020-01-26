@@ -341,7 +341,7 @@ task printGitVersion {
 }
 
 task tiran() {
-	def	myVersion=gitVersion(baseVersion: '5.0', useVersionCode: false) //baseVersion: '1.0', useVersionCode: true and tiran
+	def	myVersion=gitVersion(baseVersion: '5.0', useVersionCode: false) //baseVersion: '1.0', useVersionCode: true
 //	def	myVersion=gitVersion('v3.0.0')
 	println "gitVersion: $myVersion"
 }
