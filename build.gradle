@@ -39,7 +39,10 @@ plugins
 	id 'org.unbroken-dome.helm-publish'
 	
 	// gradle-git-version plugin
-	id 'com.palantir.git-version'
+//	id 'com.palantir.git-version'
+
+	// se.lovef.git-version plugin
+	id 'se.lovef.git-version' 
 
 	// ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
 	id 'com.google.protobuf'
@@ -331,6 +334,18 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
+task printGitVersion {
+    doLast {
+        println "gitVersion: $gitVersion"
+    }
+}
+
+task tiran() {
+	def	myVersion=gitVersion(baseVersion: '5.0', useVersionCode: true) //baseVersion: '1.0', useVersionCode: true
+//	def	myVersion=gitVersion('v3.0.0')
+	println "gitVersion: $myVersion"
+}
+
 // Notes:
 // 1. helmPackge and helmInstall tasks are used as is
 // 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
@@ -339,21 +354,23 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 // The function builds a proper version name
 //
 def manifestVersion() {
-	def details = versionDetails()
+//	def details = versionDetails()
 
 	// An alternative (can also be "0.1.0-demo.${details.branchName}")
-	return "0.1.0-${details.branchName}"
+//	return "0.1.0-${details.branchName}"
+	return "0.1.0-tiran"
 }
 
 //
 // Construct an applicable namespace to be used by the Helm Chart
 //
 def manifestNamespace() {
-	def details = versionDetails()
-	def namespace = details.branchName 
+//	def details = versionDetails()
+//	def namespace = details.branchName 
+	def namespace = "tiran" 
 
 	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
-	if (details.branchName == "${productionBranchName}" || details.branchName == "${stagingBranchName}") {
+	if (namespace == "${productionBranchName}" || namespace == "${stagingBranchName}") {
 		namespace = serviceName
 	}
 	

@@ -27,5 +27,6 @@ pluginManagement {
 		id 'com.palantir.git-version' version "${plugin_com_palantir_git_version_version}"
 		id 'com.google.protobuf' version "${plugin_com_google_protobuf_version}"
 		id 'com.wiredforcode.spawn' version "${plugin_com_wiredforcode_spawn_version}"
+		id 'se.lovef.git-version' version "${plugin_se_lovef_git_version_version}" 
   	}
 }
