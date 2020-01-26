@@ -38,17 +38,23 @@ plugins
 	id 'org.unbroken-dome.helm-releases'
 	id 'org.unbroken-dome.helm-publish'
 	
-	// gradle-git-version plugin
-//	id 'com.palantir.git-version'
-
-	// se.lovef.git-version plugin
-	id 'se.lovef.git-version' 
-
 	// ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
 	id 'com.google.protobuf'
 	
 	// Gradle Spawn Plugin
 	id 'com.wiredforcode.spawn'
+	
+	// gradle-palantir-git-version plugin
+//	id 'com.palantir.git-version'
+
+	// gradle-lovef-git-version plugin
+//	id 'se.lovef.git-version' 
+
+	// vivin-gradle-semantic-build-versioning plugin
+//	id 'net.vivin.gradle-semantic-build-versioning'
+
+	// gradle-widen-versioning plugin
+	id 'com.widen.versioning'
 }
 
 // Load environment variables
@@ -334,17 +340,17 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-task printGitVersion {
-    doLast {
-        println "gitVersion: $gitVersion"
-    }
-}
+//tag {
+//	message {
+//		"version: ${version}"
+//	}
+//}
 
-task tiran() {
-	def	myVersion=gitVersion(baseVersion: '5.0', useVersionCode: false) //baseVersion: '1.0', useVersionCode: true
+//task tiran() {
+//	def	myVersion=gitVersion(baseVersion: '6.0', useVersionCode: true) //baseVersion: '1.0', useVersionCode: true
 //	def	myVersion=gitVersion('v3.0.0')
-	println "gitVersion: $myVersion"
-}
+//	println "gitVersion: $myVersion"
+//}
 
 // Notes:
 // 1. helmPackge and helmInstall tasks are used as is
@@ -378,4 +384,4 @@ def manifestNamespace() {
 }
 
 description = 'The Echo Backend demo product'
-version = "${productVersion}"
+//version = "${productVersion}"

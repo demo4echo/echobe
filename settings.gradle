@@ -24,9 +24,25 @@ pluginManagement {
 		id 'org.unbroken-dome.helm' version "${plugin_org_unbroken_dome_helm_version}"
 		id 'org.unbroken-dome.helm-releases' version "${plugin_org_unbroken_dome_helm_releases_version}"
 		id 'org.unbroken-dome.helm-publish' version "${plugin_org_unbroken_dome_helm_publish_version}"
-		id 'com.palantir.git-version' version "${plugin_com_palantir_git_version_version}"
 		id 'com.google.protobuf' version "${plugin_com_google_protobuf_version}"
 		id 'com.wiredforcode.spawn' version "${plugin_com_wiredforcode_spawn_version}"
-		id 'se.lovef.git-version' version "${plugin_se_lovef_git_version_version}" 
+
+		id 'com.palantir.git-version' version "${plugin_com_palantir_git_version_version}"
+		id 'se.lovef.git-version' version "${plugin_se_lovef_git_version_version}"
+//		id 'net.vivin.gradle-semantic-build-versioning' version "${plugin_net_vivin_gradle_semantic_build_versioning_version}"
+		id 'com.widen.versioning' version "${plugin_com_widen_versioning_version}"
   	}
 }
+/**
+buildscript {
+	repositories {
+    	maven {
+			url 'https://plugins.gradle.org/m2/'
+		}
+	}
+	dependencies {
+		classpath "gradle.plugin.net.vivin:gradle-semantic-build-versioning:${plugin_net_vivin_gradle_semantic_build_versioning_version}"
+	}
+}
+
+apply plugin: 'net.vivin.gradle-semantic-build-versioning'*/
