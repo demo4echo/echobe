@@ -54,7 +54,10 @@ plugins
 //	id 'net.vivin.gradle-semantic-build-versioning'
 
 	// gradle-widen-versioning plugin
-	id 'com.widen.versioning'
+//	id 'com.widen.versioning'
+
+	// Infer a project's version from Git repository plugin
+	id 'org.ajoberstar.reckon'
 }
 
 // Load environment variables
@@ -71,7 +74,12 @@ ext {
 	productK8ShelmChartsFolder = "k8s/helm/charts"
 	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
+	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
+
+// Pre-Defined project properties
+description = 'The Echo Backend demo product'
+//version = "${productVersion}"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -185,6 +193,9 @@ test {
 	}
 }
 
+// Can only be used within the cluster as the ecfobe doesn't expose external interfaces
+task certify(dependsOn: 'test')
+
 // Special test task meant to run manually outside the cluster (development mode) and since the service isn't published outside
 // the cluster, we'll need kubectl port forwarding
 task testViaPortForwarding(dependsOn: ['startKubectlPortForwarding','test','stopKubectlPortForwarding'])
@@ -210,7 +221,9 @@ task stopKubectlPortForwarding(type: KillProcessTask) {
 docker {
 	name "${productName}:${productVersion}"
 	tag "privateRegistry", "${productRepository}:${productVersion}"	// For DockerHub registry
-	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
+	dockerfile file(dockerFilePath)
+//	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
+	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}"])
 	files jar.outputs
 	copySpec.into(buildDir.getName() + "/libs")
 //	pull true
@@ -330,8 +343,10 @@ task helmTestAndClean(type:Exec) {
 	args "test","${productName}","--cleanup"
 }
 
-// Can only be used within the cluster as the ecfobe doesn't expose external interfaces
-task certify(dependsOn: 'test')
+reckon {
+	scopeFromProp()
+	stageFromProp('milestone','rc','final')
+}
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
@@ -382,6 +397,3 @@ def manifestNamespace() {
 	
 	return namespace
 }
-
-description = 'The Echo Backend demo product'
-//version = "${productVersion}"
