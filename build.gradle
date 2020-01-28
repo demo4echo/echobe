@@ -174,19 +174,6 @@ jar {
 	}
 }
 
-// Make prints in tests visible
-test {
-	systemProperties = System.properties
-
-	// Setup additional environment variables
-	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
-
-	outputs.upToDateWhen {false}
-
-	testLogging {
-		showStandardStreams = true
-	}
-}
 
 // Can only be used within the cluster as the ecfobe doesn't expose external interfaces
 task certify(dependsOn: 'test')
