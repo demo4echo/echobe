@@ -7,6 +7,20 @@ ext {
 // Works with org.ajoberstar.grgit plugin
 //
 
+// Make prints in tests visible
+test {
+	systemProperties = System.properties
+
+	// Setup additional environment variables
+	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
+
+	outputs.upToDateWhen {false}
+
+	testLogging {
+		showStandardStreams = true
+	}
+}
+
 // Returns the current git branch name
 def obtainCurrentBranchName() {
 	return grgit.branch.current.name
