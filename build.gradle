@@ -56,9 +56,6 @@ plugins
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
-// Load common file
-apply from: "common.gradle"
-
 // Adding some properties
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
