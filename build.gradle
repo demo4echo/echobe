@@ -56,6 +56,9 @@ plugins
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
+// Load common file
+apply from: "common.gradle"
+
 // Adding some properties
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
@@ -68,9 +71,6 @@ ext {
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
-
-// Load common file
-apply from: "common.gradle"
 
 // Pre-Defined project properties
 description = 'The Echo Backend demo product'
