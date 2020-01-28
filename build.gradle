@@ -56,9 +56,12 @@ plugins
 	// gradle-widen-versioning plugin
 //	id 'com.widen.versioning'
 
-	// Infer a project's version from Git repository plugin
-	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically))
+	// Reckon versioning plugin
+	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically)) -Dorg.ajoberstar.grgit.auth.username=<token>
 	id 'org.ajoberstar.reckon'
+
+	// Grgit plugin 
+	id 'org.ajoberstar.grgit'
 }
 
 // Load environment variables
@@ -344,6 +347,10 @@ task helmTestAndClean(type:Exec) {
 	args "test","${productName}","--cleanup"
 }
 
+// Notes:
+// 1. helmPackge and helmInstall tasks are used as is
+// 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
+
 //
 // Versioning
 //
@@ -358,7 +365,7 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
-// Helpers
+// Reckon helpers
 task printVersion 
 task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
@@ -370,9 +377,18 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-// Notes:
-// 1. helmPackge and helmInstall tasks are used as is
-// 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
+task tiran() {
+	getVersion()
+}
+
+def getVersion() {
+	description = "Prints the current branch name of the project"
+	
+	doLast {
+		def designatedVersion = grgit.branch.current.name
+		println "This is the target version: [${designatedVersion}]"
+	}
+}
 
 //
 // The function builds a proper version name

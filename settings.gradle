@@ -32,6 +32,7 @@ pluginManagement {
 //		id 'net.vivin.gradle-semantic-build-versioning' version "${plugin_net_vivin_gradle_semantic_build_versioning_version}"
 //		id 'com.widen.versioning' version "${plugin_com_widen_versioning_version}"
 		id 'org.ajoberstar.reckon' version "${plugin_org_ajoberstar_reckon_version}"
+		id 'org.ajoberstar.grgit' version "${plugin_org_ajoberstar_grgit_version}"
   	}
 }
 
