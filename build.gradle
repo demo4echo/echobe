@@ -98,6 +98,25 @@ dependencies {
 	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
+//
+// Versioning
+//
+
+// The Reckon plugin
+reckon {
+	scopeFromProp()
+	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
+
+	// Can't use this as it hides the parameters passed in the command line
+//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
+//	project.ext['reckon.stage'] = "${reckon_default_stage}"
+}
+
+// Reckon helpers
+task printVersion 
+task stampVersion(dependsOn: reckonTagCreate)
+task publishVersion(dependsOn: reckonTagPush)
+
 // Configure protobuf
 protobuf {
 	protoc { 
@@ -339,25 +358,6 @@ task helmTestAndClean(type:Exec) {
 // 1. helmPackge and helmInstall tasks are used as is
 // 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
 
-//
-// Versioning
-//
-
-// The Reckon plugin
-reckon {
-	scopeFromProp()
-	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
-
-	// Can't use this as it hides the parameters passed in the command line
-//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
-//	project.ext['reckon.stage'] = "${reckon_default_stage}"
-}
-
-// Reckon helpers
-task printVersion 
-task stampVersion(dependsOn: reckonTagCreate)
-task publishVersion(dependsOn: reckonTagPush)
-
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	helmPackage.mustRunAfter dockerBuildAndPublish
@@ -365,14 +365,14 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-task tiran() {
-	description = "Prints the current branch name of the project"
-
-	doLast {
-		def myVersion = manifestVersion()
-		println "This is my Version: [${myVersion}]"
-	}
-}
+//task tiran() {
+//	description = "Prints the current branch name of the project"
+//
+//	doLast {
+//		def myVersion = manifestVersion()
+//		println "This is my Version: [${myVersion}]"
+//	}
+//}
 
 //
 // Works with org.ajoberstar.grgit plugin
@@ -387,6 +387,7 @@ def obtainCurrentBranchName() {
 def manifestVersion() {
 	def currentBranchName = obtainCurrentBranchName()
 	return "${version}-${currentBranchName}"
+//	return "${currentBranchName}"
 }
 
 // Construct an applicable namespace to be used by the Helm Chart
