@@ -56,6 +56,16 @@ plugins
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
+// The Reckon plugin
+reckon {
+	scopeFromProp()
+	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
+
+	// Can't use this as it hides the parameters passed in the command line
+//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
+//	project.ext['reckon.stage'] = "${reckon_default_stage}"
+}
+
 // Adding some properties
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
@@ -95,16 +105,6 @@ dependencies {
 //
 // Versioning (must be the first plugin setup)
 //
-
-// The Reckon plugin
-reckon {
-	scopeFromProp()
-	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
-
-	// Can't use this as it hides the parameters passed in the command line
-//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
-//	project.ext['reckon.stage'] = "${reckon_default_stage}"
-}
 
 // Reckon helpers
 task printVersion 
