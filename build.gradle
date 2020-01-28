@@ -67,10 +67,6 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-// Pre-Defined project properties
-description = 'The Echo Backend demo product'
-version = project.version.toString()
-
 // In this section you declare where to find the dependencies of your project
 repositories {
 	// Use 'jcenter' for resolving your dependencies.
@@ -114,6 +110,10 @@ reckon {
 task printVersion 
 task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
+
+// Pre-Defined project properties
+description = 'The Echo Backend demo product'
+version = project.version.toString()
 
 // Configure protobuf
 protobuf {
