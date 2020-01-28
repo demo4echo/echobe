@@ -346,10 +346,10 @@ task helmTestAndClean(type:Exec) {
 
 reckon {
 	scopeFromProp()
-	stageFromProp('milestone','rc','final')
+	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
 
-	project.ext['reckon.scope'] = 'patch' 
-	project.ext['reckon.stage'] = 'rc'
+	project.ext['reckon.scope'] = "${reckon_default_scope}" 
+	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
