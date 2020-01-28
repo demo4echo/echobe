@@ -110,6 +110,8 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
+println "The version is: $version"
+
 // Reckon helpers
 task printVersion 
 task stampVersion(dependsOn: reckonTagCreate)
