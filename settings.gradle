@@ -36,18 +36,7 @@ pluginManagement {
   	}
 }
 
+// Load common file
+apply from: "common.gradle"
+
 //rootProject.name = 'CI-CD_EchoServerBE'
-
-/**
-buildscript {
-	repositories {
-    	maven {
-			url 'https://plugins.gradle.org/m2/'
-		}
-	}
-	dependencies {
-		classpath "gradle.plugin.net.vivin:gradle-semantic-build-versioning:${plugin_net_vivin_gradle_semantic_build_versioning_version}"
-	}
-}
-
-apply plugin: 'net.vivin.gradle-semantic-build-versioning'*/
