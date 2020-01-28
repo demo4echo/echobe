@@ -378,16 +378,16 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 }
 
 task tiran() {
-	getVersion()
+	description = "Prints the current branch name of the project"
+
+	doLast {
+		getVersion()
+	}
 }
 
 def getVersion() {
-	description = "Prints the current branch name of the project"
-	
-	doLast {
 		def designatedVersion = grgit.branch.current.name
 		println "This is the target version: [${designatedVersion}]"
-	}
 }
 
 //
