@@ -56,10 +56,6 @@ def manifestNamespace() {
 	return namespace
 }
 
-// Load environment variables
-def envVarsProps = new Properties()
-file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
-
 // Pre-Defined project properties
 description = 'The Echo Backend demo product'
 //version = "${productVersion}"
