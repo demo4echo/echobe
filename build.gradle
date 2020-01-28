@@ -384,7 +384,8 @@ task tiran() {
 	description = "Prints the current branch name of the project"
 
 	doLast {
-		getVersion()
+		def myVersion = getVersion()
+		println "This is my Version: [${myVersion}]"
 	}
 }
 
