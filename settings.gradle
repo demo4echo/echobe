@@ -36,7 +36,4 @@ pluginManagement {
   	}
 }
 
-// Load common file
-apply from: "common.gradle"
-
 //rootProject.name = 'CI-CD_EchoServerBE'
