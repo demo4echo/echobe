@@ -13,48 +13,6 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-//
-// Works with org.ajoberstar.grgit plugin
-//
-
-// Make prints in tests visible
-test {
-	systemProperties = System.properties
-
-	// Setup additional environment variables
-	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
-
-	outputs.upToDateWhen {false}
-
-	testLogging {
-		showStandardStreams = true
-	}
-}
-
-// Returns the current git branch name
-def obtainCurrentBranchName() {
-	return grgit.branch.current.name
-}
-
-// Builds a proper version name
-def manifestVersion() {
-	def currentBranchName = obtainCurrentBranchName()
-	return "${version}-${currentBranchName}"
-}
-
-// Construct an applicable namespace to be used by the Helm Chart
-def manifestNamespace() {
-//	def details = versionDetails()
-//	def namespace = details.branchName 
-	def namespace = "tiran" 
-
-	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
-	if (namespace == "${productionBranchName}" || namespace == "${stagingBranchName}") {
-		namespace = serviceName
-	}
-	
-	return namespace
-}
 
 // Pre-Defined project properties
 description = 'The Echo Backend demo product'
@@ -138,8 +96,6 @@ jar {
 	from	{
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
-	
-	println "Tiran is here"
 }
 
 
