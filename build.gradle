@@ -57,12 +57,9 @@ plugins
 //	id 'com.widen.versioning'
 
 	// Infer a project's version from Git repository plugin
-	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final
+	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically))
 	id 'org.ajoberstar.reckon'
 }
-
-project.ext['reckon.scope'] = 'patch' 
-project.ext['reckon.stage'] = 'rc'
 
 // Load environment variables
 def envVarsProps = new Properties()
@@ -350,6 +347,9 @@ task helmTestAndClean(type:Exec) {
 reckon {
 	scopeFromProp()
 	stageFromProp('milestone','rc','final')
+
+	project.ext['reckon.scope'] = 'patch' 
+	project.ext['reckon.stage'] = 'rc'
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
