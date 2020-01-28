@@ -2,12 +2,12 @@
 // Works with org.ajoberstar.grgit plugin
 //
 
-// The function returns the current git branch name
+// Returns the current git branch name
 def obtainCurrentBranchName() {
 	return grgit.branch.current.name
 }
 
-// The function builds a proper version name
+// Builds a proper version name
 def manifestVersion() {
 	def currentBranchName = obtainCurrentBranchName()
 	return "${version}-${currentBranchName}"
