@@ -44,20 +44,8 @@ plugins
 	// Gradle Spawn Plugin
 	id 'com.wiredforcode.spawn'
 	
-	// gradle-palantir-git-version plugin
-//	id 'com.palantir.git-version'
-
-	// gradle-lovef-git-version plugin
-//	id 'se.lovef.git-version' 
-
-	// vivin-gradle-semantic-build-versioning plugin
-//	id 'net.vivin.gradle-semantic-build-versioning'
-
-	// gradle-widen-versioning plugin
-//	id 'com.widen.versioning'
-
 	// Reckon versioning plugin
-	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically)) -Dorg.ajoberstar.grgit.auth.username=<token>
+	// Usage: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically)) -Dorg.ajoberstar.grgit.auth.username=<token>
 	id 'org.ajoberstar.reckon'
 
 	// Grgit plugin 
@@ -384,39 +372,7 @@ task tiran() {
 	description = "Prints the current branch name of the project"
 
 	doLast {
-		def myVersion = getVersion()
+		def myVersion = manifestVersion()
 		println "This is my Version: [${myVersion}]"
 	}
-}
-
-//def getVersion() {
-//	def designatedVersion = grgit.branch.current.name
-//	println "This is the target version: [${designatedVersion}]"
-//}
-
-//
-// The function builds a proper version name
-//
-def manifestVersion() {
-//	def details = versionDetails()
-
-	// An alternative (can also be "0.1.0-demo.${details.branchName}")
-//	return "0.1.0-${details.branchName}"
-	return "0.1.0-tiran"
-}
-
-//
-// Construct an applicable namespace to be used by the Helm Chart
-//
-def manifestNamespace() {
-//	def details = versionDetails()
-//	def namespace = details.branchName 
-	def namespace = "tiran" 
-
-	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
-	if (namespace == "${productionBranchName}" || namespace == "${stagingBranchName}") {
-		namespace = serviceName
-	}
-	
-	return namespace
 }
