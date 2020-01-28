@@ -14,7 +14,7 @@
  * https://docs.gradle.org/current/userguide/tutorial_java_projects.html
  * ============================================================================
  */
- 
+
 plugins
 {
 	// Core functionality
@@ -60,6 +60,9 @@ plugins
 	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final
 	id 'org.ajoberstar.reckon'
 }
+
+project.ext['reckon.scope'] = 'major' 
+project.ext['reckon.stage'] = 'RC'
 
 // Load environment variables
 def envVarsProps = new Properties()
