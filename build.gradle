@@ -64,6 +64,9 @@ plugins
 	id 'org.ajoberstar.grgit'
 }
 
+// Load common file
+apply from: "common.gradle"
+
 // Load environment variables
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
@@ -385,10 +388,10 @@ task tiran() {
 	}
 }
 
-def getVersion() {
-		def designatedVersion = grgit.branch.current.name
-		println "This is the target version: [${designatedVersion}]"
-}
+//def getVersion() {
+//	def designatedVersion = grgit.branch.current.name
+//	println "This is the target version: [${designatedVersion}]"
+//}
 
 //
 // The function builds a proper version name

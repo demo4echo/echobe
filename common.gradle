@@ -1,0 +1,4 @@
+def getVersion() {
+	def designatedVersion = grgit.branch.current.name
+	println "This is the target version: [${designatedVersion}]"
+}
