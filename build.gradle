@@ -344,9 +344,6 @@ task helmTestAndClean(type:Exec) {
 	args "test","${productName}","--cleanup"
 }
 
-// TODO
-task helmPublish
-
 //
 // Versioning
 //
