@@ -56,6 +56,10 @@ plugins
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
+//
+// Versioning (must be the first plugin setup)
+//
+
 // The Reckon plugin
 reckon {
 	scopeFromProp()
@@ -65,6 +69,15 @@ reckon {
 //	project.ext['reckon.scope'] = "${reckon_default_scope}" 
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
+
+// Reckon helpers
+task printVersion 
+task stampVersion(dependsOn: reckonTagCreate)
+task publishVersion(dependsOn: reckonTagPush)
+
+// Pre-Defined project properties
+project.description = 'The Echo Backend demo product'
+project.version = project.version.toString()
 
 // Adding some properties
 ext {
@@ -101,19 +114,6 @@ dependencies {
 	compileOnly "javax.annotation:javax.annotation-api:${dep_javax_annotation_version}"
 	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
-
-//
-// Versioning (must be the first plugin setup)
-//
-
-// Reckon helpers
-task printVersion 
-task stampVersion(dependsOn: reckonTagCreate)
-task publishVersion(dependsOn: reckonTagPush)
-
-// Pre-Defined project properties
-project.description = 'The Echo Backend demo product'
-project.version = project.version.toString()
 
 // Configure protobuf
 protobuf {
