@@ -69,7 +69,7 @@ ext {
 
 // Pre-Defined project properties
 description = 'The Echo Backend demo product'
-//version = "${productVersion}"
+version = project.version.toString()
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -109,8 +109,6 @@ reckon {
 //	project.ext['reckon.scope'] = "${reckon_default_scope}" 
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
-
-println "The version is: $version"
 
 // Reckon helpers
 task printVersion 
