@@ -15,7 +15,7 @@ include 'shared'
 include 'api'
 include 'services:webservice'
 */
-
+/*
 pluginManagement {
 	plugins {
 		id 'com.dorongold.task-tree' version "${plugin_com_dorongold_task_tree_version}"
@@ -34,7 +34,7 @@ pluginManagement {
 		id 'org.ajoberstar.reckon' version "${plugin_org_ajoberstar_reckon_version}"
   	}
 }
-
+*/
 //rootProject.name = 'CI-CD_EchoServerBE'
 
 /**
