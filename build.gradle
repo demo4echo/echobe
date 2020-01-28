@@ -60,8 +60,6 @@ file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
-//	productVersion = "v0.1.0-feature1"
-//	productVersion = gitVersion()
 	productVersion = manifestVersion()
 	productK8ShelmChartsFolder = "k8s/helm/charts"
 	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
@@ -99,7 +97,7 @@ dependencies {
 }
 
 //
-// Versioning
+// Versioning (must be the first plugin setup)
 //
 
 // The Reckon plugin
@@ -233,7 +231,6 @@ docker {
 	name "${productName}:${productVersion}"
 	tag "privateRegistry", "${productRepository}:${productVersion}"	// For DockerHub registry
 	dockerfile file(dockerFilePath)
-//	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
 	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}"])
 	files jar.outputs
 	copySpec.into(buildDir.getName() + "/libs")
@@ -365,15 +362,6 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-//task tiran() {
-//	description = "Prints the current branch name of the project"
-//
-//	doLast {
-//		def myVersion = manifestVersion()
-//		println "This is my Version: [${myVersion}]"
-//	}
-//}
-
 //
 // Works with org.ajoberstar.grgit plugin
 //
@@ -387,7 +375,6 @@ def obtainCurrentBranchName() {
 def manifestVersion() {
 	def currentBranchName = obtainCurrentBranchName()
 	return "${version}-${currentBranchName}"
-//	return "${currentBranchName}"
 }
 
 // Construct an applicable namespace to be used by the Helm Chart
