@@ -353,7 +353,9 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
-task versionStamp (dependsOn: reckonTagPush)
+task printversionStamp 
+
+task versionStamp(dependsOn: reckonTagPush)
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
