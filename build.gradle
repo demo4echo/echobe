@@ -57,6 +57,7 @@ plugins
 //	id 'com.widen.versioning'
 
 	// Infer a project's version from Git repository plugin
+	// Run: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final
 	id 'org.ajoberstar.reckon'
 }
 
