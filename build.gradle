@@ -77,7 +77,7 @@ task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
-project.version = project.version.toString()
+project.version = project.version.toString() // Forcing the version parameter to be a string (so it can be serialized)
 
 // Adding some properties
 ext {
@@ -376,8 +376,6 @@ def obtainCurrentBranchName() {
 // Builds a proper version name
 def manifestVersion() {
 	def currentBranchName = obtainCurrentBranchName()
-//	def currentVersion = project.version.toString()
-//	return "${currentVersion}-${currentBranchName}"
 	return "${project.version}-${currentBranchName}"
 }
 
