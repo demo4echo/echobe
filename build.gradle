@@ -112,8 +112,8 @@ task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
-description = 'The Echo Backend demo product'
-version = project.version.toString()
+project.description = 'The Echo Backend demo product'
+project.version = project.version.toString()
 
 // Configure protobuf
 protobuf {
