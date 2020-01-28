@@ -353,7 +353,7 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
-task printversionStamp 
+task printVersionStamp 
 
 task versionStamp(dependsOn: reckonTagPush)
 
