@@ -360,18 +360,6 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-//tag {
-//	message {
-//		"version: ${version}"
-//	}
-//}
-
-//task tiran() {
-//	def	myVersion=gitVersion(baseVersion: '6.0', useVersionCode: true) //baseVersion: '1.0', useVersionCode: true
-//	def	myVersion=gitVersion('v3.0.0')
-//	println "gitVersion: $myVersion"
-//}
-
 // Notes:
 // 1. helmPackge and helmInstall tasks are used as is
 // 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
