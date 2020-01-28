@@ -347,6 +347,11 @@ task helmTestAndClean(type:Exec) {
 // TODO
 task helmPublish
 
+//
+// Versioning
+//
+
+// The Reckon plugin
 reckon {
 	scopeFromProp()
 	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
@@ -356,6 +361,7 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
+// Helpers
 task printVersion 
 task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
