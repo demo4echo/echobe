@@ -391,9 +391,7 @@ def manifestVersion() {
 
 // Construct an applicable namespace to be used by the Helm Chart
 def manifestNamespace() {
-//	def details = versionDetails()
-//	def namespace = details.branchName 
-	def namespace = "tiran" 
+	def namespace = obtainCurrentBranchName()
 
 	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
 	if (namespace == "${productionBranchName}" || namespace == "${stagingBranchName}") {
