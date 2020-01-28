@@ -344,6 +344,9 @@ task helmTestAndClean(type:Exec) {
 	args "test","${productName}","--cleanup"
 }
 
+// TODO
+task helmPublish
+
 reckon {
 	scopeFromProp()
 	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
@@ -353,9 +356,9 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
-task printVersionStamp 
-
-task versionStamp(dependsOn: reckonTagPush)
+task printVersion 
+task stampVersion(dependsOn: reckonTagCreate)
+task publishVersion(dependsOn: reckonTagPush)
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
