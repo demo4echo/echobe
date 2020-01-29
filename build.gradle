@@ -376,7 +376,7 @@ task designatedTagCreate {
 			message = "Release of ${name}"
 		}
 		
-		println "Tag ${project.ext['demo4echo.designatedTagName']} has been created"
+		println "Tag cretaed: ${project.ext['demo4echo.designatedTagName']}"
 	}
 }
 
