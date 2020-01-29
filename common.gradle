@@ -207,6 +207,7 @@ task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 // It must be run before the Helm tasks
 task adjustProjectVersionToBeSerializable {
 	doFirst {
+		println "Setting project version"
 		project.version = project.version.toString()
 	}
 }
