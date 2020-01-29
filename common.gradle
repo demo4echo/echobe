@@ -20,9 +20,13 @@ gradle.taskGraph.beforeTask { Task task ->
 		project.version = originalProjectVersionObject
 		println "First class is: ${project.version.class}"
 	} 
-	else {
-		println "Task name is: ${task.name}"
-	}
+}
+gradle.taskGraph.afterTask { Task task ->
+	if (task.name == 'reckonTagCreate') {
+		println "After reckonTagCreate"
+		project.version = originalProjectVersionObject.toString()
+		println "Last class is: ${project.version.class}"
+	} 
 }
 
 //
