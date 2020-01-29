@@ -286,7 +286,11 @@ helm {
 //	}
 }
 
-task helmUpdate(dependsOn: 'helmInstall')
+task helmUpdate(dependsOn: 'helmInstall') {
+	doFirst {
+		println "tiran is here"
+	}
+}
 task helmUninstall(dependsOn: 'helmDelete')
 
 task helmTest(type:Exec) {
