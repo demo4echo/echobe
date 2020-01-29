@@ -1,7 +1,3 @@
-// Load environment variables
-def envVarsProps = new Properties()
-file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
-
 // Adding some properties
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
@@ -362,18 +358,7 @@ task gitPull {
 		}
 	}
 }
-/**
-// Master task that runs a complete flow (like the Jenkins Pipeline)
-task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-	dockerBuildAndPublish.mustRunAfter publishVersion
 
-	helmPackage.mustRunAfter dockerBuildAndPublish
-
-	helmUpdate.mustRunAfter helmPackage
-
-	helmTestAndClean.mustRunAfter helmUpdate
-}
-*/
 //
 // Works with org.ajoberstar.grgit plugin
 //

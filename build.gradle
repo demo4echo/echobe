@@ -69,6 +69,10 @@ dependencies {
 	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
+// Load environment variables
+def envVarsProps = new Properties()
+file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
+
 //
 // Load common build logic
 //
