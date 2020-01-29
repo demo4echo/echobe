@@ -250,7 +250,7 @@ task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 //
 
 helm {
-	println "Configurating Helm task"
+	println "Configurating Helm task with project version class: ${project.version.class}"
 	
 	home = file("${System.properties['user.home']}${File.separator}.helm")
 	debug = true
