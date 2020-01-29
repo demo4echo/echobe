@@ -13,7 +13,7 @@ ext {
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
-
+/**
 tasks.whenTaskAdded { task ->
 	project.version = originalProjectVersionObject.toString() 
 }
@@ -35,7 +35,7 @@ gradle.taskGraph.afterTask { Task task ->
 		println "Last class is: ${project.version.class}"
 	} 
 }
-
+*/
 //
 // Versioning (must be the first plugin setup)
 //
@@ -402,8 +402,9 @@ task gitPull {
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
-task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-	dockerBuildAndPublish.mustRunAfter reckonTagPush
+//task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+//	dockerBuildAndPublish.mustRunAfter reckonTagPush
 
 	helmPackage.mustRunAfter dockerBuildAndPublish
 
