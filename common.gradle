@@ -17,6 +17,8 @@ ext {
 gradle.taskGraph.beforeTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
 		println "Before reckonTagCreate"
+		project.version = originalProjectVersionObject
+		println "First class is: ${project.version.class}"
 	} 
 	else {
 		println "Task name is: ${task.name}"
