@@ -28,6 +28,8 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
+println "class is: ${originalProjectVersionObject.class}"
+
 // Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
 reckonTagCreate.doFirst {
 	project.version = originalProjectVersionObject
