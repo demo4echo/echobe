@@ -134,8 +134,8 @@ ext.productVersion = manifestVersion()
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
-project.version = originalProjectVersionObject.toString()
-//project.version = project.version.toString()
+//project.version = originalProjectVersionObject.toString()
+project.version = project.version.toString()
 
 // In this section you declare where to find the dependencies of your project
 repositories {
