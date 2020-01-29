@@ -14,6 +14,10 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
+tasks.whenTaskAdded { task ->
+	project.version = originalProjectVersionObject.toString() 
+}
+
 gradle.taskGraph.beforeTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
 		println "Before reckonTagCreate"
