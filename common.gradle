@@ -14,7 +14,7 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-gradle.beforeEvaluate { project ->
+project.beforeEvaluate { project ->
 	project.version = originalProjectVersionObject.toString() 
 	println "Project version class is: ${project.version.class}"
 
