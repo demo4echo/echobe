@@ -357,6 +357,37 @@ task helmTestAndClean(type:Exec) {
 // 1. helmPackge and helmInstall tasks are used as is
 // 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
 
+//
+// Works with org.ajoberstar.grgit plugin
+//
+task designatedTagCreate {
+	description = 'Tags the current head with a designated name'
+	
+	doFirst {
+		if (project.hasProperty('demo4echo.designatedTagName') == false)
+		{
+			throw new TaskExecutionException("Missing 'demo4echo.designatedTagName' project property")
+		}
+	}
+	
+	doLast {
+		{
+			grgit.tag.add {
+				name = project.ext['demo4echo.designatedTagName']
+				message = "Release of ${name}"
+			}
+		}
+	}
+}
+
+task designatedTagPush {
+	description = 'Pushes current branch\'s committed changes to origin repo.'
+	
+	doLast {
+		grgit.push()
+	}
+}
+
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	helmPackage.mustRunAfter dockerBuildAndPublish
