@@ -131,6 +131,7 @@ task printVersion
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
 project.version = originalProjectVersionObject.toString()
+project.version = project.version.toString()
 println "Just configured project version"
 
 // In this section you declare where to find the dependencies of your project
