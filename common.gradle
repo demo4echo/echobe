@@ -23,7 +23,7 @@ task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
-project.version = project.version.toString() // Forcing the version parameter to be a string (so it can be serialized)
+//project.version = project.version.toString() // Forcing the version parameter to be a string (so it can be serialized)
 
 // Adding some properties
 ext {
