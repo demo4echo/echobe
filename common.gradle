@@ -29,10 +29,10 @@ reckon {
 }
 
 // Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
-createTagTask.doFirst {
+reckonTagCreate.doFirst {
 	project.version = originalProjectVersionObject
 }
-createTagTask.doLast {
+reckonTagCreate.doLast {
 	project.version = originalProjectVersionObject.toString()
 }
 
