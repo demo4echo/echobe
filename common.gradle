@@ -28,14 +28,14 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
-println "class is: ${originalProjectVersionObject.class}"
-
 // Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
 reckonTagCreate.doFirst {
 	project.version = originalProjectVersionObject
+	println "First class is: ${project.version.class}"
 }
 reckonTagCreate.doLast {
 	project.version = originalProjectVersionObject.toString()
+	println "Last class is: ${project.version.class}"
 }
 
 // Reckon helpers
