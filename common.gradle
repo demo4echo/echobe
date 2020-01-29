@@ -14,16 +14,20 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
+gradle.beforeProject { project ->
+	println "Inside beforeProject"
+}
 project.beforeEvaluate { project ->
-	project.version = originalProjectVersionObject.toString() 
-	println "Project version class is: ${project.version.class}"
+	println "Inside beforeEvaluate"
+//	project.version = originalProjectVersionObject.toString() 
+//	println "Project version class is: ${project.version.class}"
 
-	if (project.state.failure) {
-		println "Evaluation of $project FAILED"
-	} 
-	else {
-		println "Evaluation of $project succeeded"
-	}
+//	if (project.state.failure) {
+//		println "Evaluation of $project FAILED"
+//	} 
+//	else {
+//		println "Evaluation of $project succeeded"
+//	}
 }
 
 /**
