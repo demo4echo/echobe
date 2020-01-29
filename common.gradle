@@ -14,7 +14,7 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-gradle.afterProject { project ->
+gradle.beforeProject { project ->
 	if (project.state.failure) {
 		println "Evaluation of $project FAILED"
 	} 
