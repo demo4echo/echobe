@@ -23,7 +23,6 @@ task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
-//project.version = project.version.toString() // Forcing the version parameter to be a string (so it can be serialized)
 
 // Adding some properties
 ext {
@@ -204,6 +203,12 @@ task dockerBuildAndPublish(dependsOn: 'dockerPushPrivateRegistry')
 // Give an alias to dockerRun task
 task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 
+// Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
+// It must be run before the Helm tasks
+task adjustProjectVersionToBeSerializable {
+	project.version = project.version.toString()
+}
+
 //
 // helm
 //
@@ -285,11 +290,6 @@ helm {
 //		}
 //	}
 }
-
-helmFilterEchobeChartSources.doFirst {
-	println "tiran is here"
-}
-
 
 task helmUpdate(dependsOn: 'helmInstall')
 task helmUninstall(dependsOn: 'helmDelete')
@@ -374,10 +374,12 @@ task gitPull {
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
-task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,adjustProjectVersionToBeSerializable,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	dockerBuildAndPublish.mustRunAfter reckonTagPush
 
-	helmPackage.mustRunAfter dockerBuildAndPublish
+	adjustProjectVersionToBeSerializable.mustRunAfter dockerBuildAndPublish
+
+	helmPackage.mustRunAfter adjustProjectVersionToBeSerializable
 
 	helmUpdate.mustRunAfter helmPackage
 
