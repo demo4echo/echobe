@@ -60,7 +60,7 @@ file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
 // Adding some properties
 ext {
-	originalProjectVersionObject = project.version
+//	originalProjectVersionObject = project.version
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
 	productVersion = manifestVersion()
