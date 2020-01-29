@@ -125,8 +125,8 @@ reckon {
 
 // Reckon helpers
 task printVersion
-//task stampVersion(dependsOn: reckonTagCreate)
-//task publishVersion(dependsOn: reckonTagPush)
+task stampVersion(dependsOn: reckonTagCreate)
+task publishVersion(dependsOn: reckonTagPush)
 
 // These properties must be defined after the reckon plugin is set up
 ext.originalProjectVersionObject = project.version
