@@ -18,14 +18,6 @@ ext {
 // Versioning (must be the first plugin setup)
 //
 
-// Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
-createTagTask.doFirst {
-	project.version = originalProjectVersionObject
-}
-createTagTask.doLast {
-	project.version = originalProjectVersionObject.toString()
-}
-
 // The Reckon plugin
 reckon {
 	scopeFromProp()
@@ -36,8 +28,16 @@ reckon {
 //	project.ext['reckon.stage'] = "${reckon_default_stage}"
 }
 
+// Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
+createTagTask.doFirst {
+	project.version = originalProjectVersionObject
+}
+createTagTask.doLast {
+	project.version = originalProjectVersionObject.toString()
+}
+
 // Reckon helpers
-task printVersion 
+task printVersion
 task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
 
