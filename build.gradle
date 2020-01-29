@@ -129,6 +129,7 @@ task printVersion
 //task publishVersion(dependsOn: reckonTagPush)
 
 ext.originalProjectVersionObject = project.version
+ext.productVersion = manifestVersion()
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
@@ -136,7 +137,6 @@ project.version = originalProjectVersionObject.toString()
 //project.version = project.version.toString()
 
 // These properties must be defined after the reckon plugin is set up
-ext.productVersion = manifestVersion()
 
 // In this section you declare where to find the dependencies of your project
 repositories {
