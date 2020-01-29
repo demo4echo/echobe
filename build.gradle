@@ -60,10 +60,8 @@ file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
 // Adding some properties
 ext {
-//	originalProjectVersionObject = project.version
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
-//	productVersion = manifestVersion()
 	productK8ShelmChartsFolder = "k8s/helm/charts"
 	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
@@ -444,9 +442,9 @@ task gitPull {
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
-//task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-//	dockerBuildAndPublish.mustRunAfter publishVersion
+task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+//task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+	dockerBuildAndPublish.mustRunAfter publishVersion
 
 	helmPackage.mustRunAfter dockerBuildAndPublish
 
