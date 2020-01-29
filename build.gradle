@@ -63,7 +63,7 @@ ext {
 //	originalProjectVersionObject = project.version
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
-	productVersion = manifestVersion()
+//	productVersion = manifestVersion()
 	productK8ShelmChartsFolder = "k8s/helm/charts"
 	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
@@ -132,6 +132,7 @@ task printVersion
 project.description = 'The Echo Backend demo product'
 //project.version = originalProjectVersionObject.toString()
 project.version = project.version.toString()
+ext.productVersion = manifestVersion()
 println "Just configured project version"
 
 // In this section you declare where to find the dependencies of your project
