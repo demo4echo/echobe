@@ -494,7 +494,8 @@ def obtainCurrentBranchName() {
 // Builds a proper version name
 def manifestVersion() {
 	def currentBranchName = obtainCurrentBranchName()
-	return "${project.version}-${currentBranchName}"
+	def currentVersionName = project.version.toString()
+	return "${currentVersionName}-${currentBranchName}"
 }
 
 // Construct an applicable namespace to be used by the Helm Chart
