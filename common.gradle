@@ -2,9 +2,29 @@
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
+// Adding some properties
+ext {
+	originalProjectVersionObject = project.version
+	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
+	productRepository = "${serviceName}/${productName}"
+	productVersion = manifestVersion()
+	productK8ShelmChartsFolder = "k8s/helm/charts"
+	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
+	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
+	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
+}
+
 //
 // Versioning (must be the first plugin setup)
 //
+
+// Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
+createTagTask.doFirst {
+	project.version = originalProjectVersionObject
+}
+createTagTask.doLast {
+	project.version = originalProjectVersionObject.toString()
+}
 
 // The Reckon plugin
 reckon {
@@ -23,20 +43,7 @@ task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
-
-// Adding some properties
-ext {
-	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
-	productRepository = "${serviceName}/${productName}"
-	productVersion = manifestVersion()
-	productK8ShelmChartsFolder = "k8s/helm/charts"
-	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
-	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
-	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
-	"tiran.meltser" = 'golan'
-}
-
-println "print is ${'tiran.meltser'}"
+project.version = originalProjectVersionObject.toString() 
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -206,15 +213,6 @@ task dockerBuildAndPublish(dependsOn: 'dockerPushPrivateRegistry')
 // Give an alias to dockerRun task
 task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 
-// Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
-// It must be run before the Helm tasks
-task adjustProjectVersionToBeSerializable {
-	doFirst {
-		println "Setting project version"
-		project.version = project.version.toString()
-	}
-}
-
 //
 // helm
 //
@@ -380,12 +378,10 @@ task gitPull {
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
-task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,adjustProjectVersionToBeSerializable,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+task AIO (dependsOn: [reckonTagPush,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	dockerBuildAndPublish.mustRunAfter reckonTagPush
 
-	adjustProjectVersionToBeSerializable.mustRunAfter dockerBuildAndPublish
-
-	helmPackage.mustRunAfter adjustProjectVersionToBeSerializable
+	helmPackage.mustRunAfter dockerBuildAndPublish
 
 	helmUpdate.mustRunAfter helmPackage
 
