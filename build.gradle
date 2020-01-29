@@ -70,38 +70,17 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-gradle.beforeProject { project ->
-	println "Inside beforeProject"
-}
-project.beforeEvaluate { project ->
-	println "Inside beforeEvaluate"
-//	project.version = originalProjectVersionObject.toString() 
-//	println "Project version class is: ${project.version.class}"
-
-//	if (project.state.failure) {
-//		println "Evaluation of $project FAILED"
-//	} 
-//	else {
-//		println "Evaluation of $project succeeded"
-//	}
-}
-
-//tasks.whenTaskAdded { task ->
-//	project.version = originalProjectVersionObject.toString() 
-//}
-
+// Add this setion to avoid:
+// 	Could not evaluate onlyIf predicate for task ':reckonTagCreate'.
+// 	> java.lang.String cannot be cast to org.ajoberstar.reckon.gradle.ReckonPlugin$DelayedVersion
 gradle.taskGraph.beforeTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
-		println "Before reckonTagCreate"
 		project.version = originalProjectVersionObject
-		println "First class is: ${project.version.class}"
 	}
 }
 gradle.taskGraph.afterTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
-		println "After reckonTagCreate"
 		project.version = originalProjectVersionObject.toString()
-		println "Last class is: ${project.version.class}"
 	} 
 }
 
