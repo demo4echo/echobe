@@ -360,6 +360,7 @@ task helmTestAndClean(type:Exec) {
 //
 // Works with org.ajoberstar.grgit plugin
 //
+
 task designatedTagCreate {
 	description = 'Tags the current head with a designated name'
 	
@@ -376,7 +377,26 @@ task designatedTagCreate {
 			message = "Release of ${name}"
 		}
 		
-		println "Tag cretaed: ${project.ext['demo4echo.designatedTagName']}"
+		println "Designated tag cretaed: ${project.ext['demo4echo.designatedTagName']}"
+	}
+}
+
+task designatedTagDestroy {
+	description = 'Removes designated tag name from GIT'
+	
+	doFirst {
+		if (project.hasProperty('demo4echo.designatedTagName') == false)
+		{
+			throw new GradleException("Missing 'demo4echo.designatedTagName' project property")
+		}
+	}
+	
+	doLast {
+		grgit.tag.rmove {
+			names = [project.ext['demo4echo.designatedTagName']]
+		}
+		
+		println "Designated tag destroyed: ${project.ext['demo4echo.designatedTagName']}"
 	}
 }
 
