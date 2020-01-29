@@ -15,12 +15,14 @@ ext {
 }
 
 gradle.beforeProject { project ->
+	project.version = originalProjectVersionObject.toString() 
+	println "Project version class is: ${project.version.class}"
+
 	if (project.state.failure) {
 		println "Evaluation of $project FAILED"
 	} 
 	else {
 		println "Evaluation of $project succeeded"
-		project.version = originalProjectVersionObject.toString() 
 	}
 }
 
