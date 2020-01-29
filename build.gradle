@@ -371,11 +371,9 @@ task designatedTagCreate {
 	}
 	
 	doLast {
-		{
-			grgit.tag.add {
-				name = project.ext['demo4echo.designatedTagName']
-				message = "Release of ${name}"
-			}
+		grgit.tag.add {
+			name = project.ext['demo4echo.designatedTagName']
+			message = "Release of ${name}"
 		}
 	}
 }
