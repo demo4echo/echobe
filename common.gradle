@@ -1,8 +1,68 @@
+plugins
+{
+	// Core functionality
+	id 'base'
+ 	
+   // Apply the java plugin to add support for Java
+	id 'java'
+
+	// Apply the eclipse plugin to add support for Eclipse
+	id 'eclipse'
+
+	// taskTree plugin
+	id 'com.dorongold.task-tree'
+
+	// gradle-docker plugins
+	id 'com.palantir.docker'
+	id 'com.palantir.docker-run'
+
+	// gradle-helm-plugin plugins
+	id 'org.unbroken-dome.helm'
+	id 'org.unbroken-dome.helm-releases'
+	id 'org.unbroken-dome.helm-publish'
+	
+	// ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
+	id 'com.google.protobuf'
+	
+	// Gradle Spawn Plugin
+	id 'com.wiredforcode.spawn'
+	
+	// Reckon versioning plugin
+	// Usage: ./gradlew [TASK] -Preckon.scope=minor|major -Preckon.stage=rc|final (default is minor and first stage in the list (ordered alphabetically)) -Dorg.ajoberstar.grgit.auth.username=<token>
+	id 'org.ajoberstar.reckon'
+
+	// Grgit plugin 
+	id 'org.ajoberstar.grgit'
+}
+
 // Load environment variables
 def envVarsProps = new Properties()
 file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 
-// Define project properties
+//
+// Versioning (must be the first plugin setup)
+//
+
+// The Reckon plugin
+reckon {
+	scopeFromProp()
+	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
+
+	// Can't use this as it hides the parameters passed in the command line
+//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
+//	project.ext['reckon.stage'] = "${reckon_default_stage}"
+}
+
+// Reckon helpers
+task printVersion 
+task stampVersion(dependsOn: reckonTagCreate)
+task publishVersion(dependsOn: reckonTagPush)
+
+// Pre-Defined project properties
+project.description = 'The Echo Backend demo product'
+project.version = project.version.toString() // Forcing the version parameter to be a string (so it can be serialized)
+
+// Adding some properties
 ext {
 	serviceName = envVarsProps.SERVICE_NAME_ENV_VAR
 	productRepository = "${serviceName}/${productName}"
@@ -13,16 +73,29 @@ ext {
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
 }
 
-
-// Pre-Defined project properties
-description = 'The Echo Backend demo product'
-//version = "${productVersion}"
-
 // In this section you declare where to find the dependencies of your project
 repositories {
 	// Use 'jcenter' for resolving your dependencies.
 	// You can declare any Maven/Ivy/file repository here.
 	jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    // Declare the dependency for your favourite test framework you want to use in your tests.
+    // TestNG is also supported by the Gradle Test task. Just change the
+    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
+    // 'test.useTestNG()' to your build script.
+	testCompile "junit:junit:${dep_junit_version}"
+
+    // The production code uses the SLF4J logging API at compile time
+	compile "org.slf4j:slf4j-api:${dep_slf4j_version}"
+
+	// gRPC
+	implementation "io.grpc:grpc-protobuf:${dep_grpc_version}"
+	implementation "io.grpc:grpc-stub:${dep_grpc_version}"
+	compileOnly "javax.annotation:javax.annotation-api:${dep_javax_annotation_version}"
+	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
 // Configure protobuf
@@ -89,15 +162,30 @@ tasks.eclipse.dependsOn << {
 
 // Create an uber jar
 jar {
-	manifest	{
-   	attributes "Main-Class": "com.efrat.example.devops.echoServerBEApp.EchoServerBEApp"
+	archiveClassifier=obtainCurrentBranchName()
+	
+	manifest {
+   		attributes "Main-Class": "com.efrat.example.devops.echoServerBEApp.EchoServerBEApp"
 	}
 
-	from	{
+	from {
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
 }
 
+// Make prints in tests visible
+test {
+	systemProperties = System.properties
+
+	// Setup additional environment variables
+	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
+
+	outputs.upToDateWhen {false}
+
+	testLogging {
+		showStandardStreams = true
+	}
+}
 
 // Can only be used within the cluster as the ecfobe doesn't expose external interfaces
 task certify(dependsOn: 'test')
@@ -128,7 +216,6 @@ docker {
 	name "${productName}:${productVersion}"
 	tag "privateRegistry", "${productRepository}:${productVersion}"	// For DockerHub registry
 	dockerfile file(dockerFilePath)
-//	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}",PRODUCT_INTERNAL_PORT:"${productInternalPort}"])
 	buildArgs([JAR_PRODUCT_NAME:"${project.name}",JAR_PRODUCT_VERSION:"${productVersion}"])
 	files jar.outputs
 	copySpec.into(buildDir.getName() + "/libs")
@@ -254,25 +341,69 @@ task helmTestAndClean(type:Exec) {
 // 2. helmInstall and helmUninstall (helmDelete) can be used with "-Phelm.dryRun"
 
 //
-// Versioning
+// Works with org.ajoberstar.grgit plugin
 //
 
-// The Reckon plugin
-reckon {
-	scopeFromProp()
-	stageFromProp("${reckon_development_stage_name}","${reckon_integration_stage_name}","${reckon_production_stage_name}")
-
-	println "Configured Reckon!!!"
-
-	// Can't use this as it hides the parameters passed in the command line
-//	project.ext['reckon.scope'] = "${reckon_default_scope}" 
-//	project.ext['reckon.stage'] = "${reckon_default_stage}"
+task designatedTagCreate {
+	description = 'Tags the current head with a designated name'
+	
+	doFirst {
+		if (project.hasProperty('demo4echo.designatedTagName') == false)
+		{
+			throw new GradleException("Missing 'demo4echo.designatedTagName' project property")
+		}
+	}
+	
+	doLast {
+		grgit.tag.add {
+			name = project.ext['demo4echo.designatedTagName']
+			message = "Release of ${name}"
+		}
+		
+		println "Designated tag cretaed: ${project.ext['demo4echo.designatedTagName']}"
+	}
 }
 
-// Reckon helpers
-task printVersion 
-task stampVersion(dependsOn: reckonTagCreate)
-task publishVersion(dependsOn: reckonTagPush)
+task designatedTagDestroy {
+	description = 'Removes designated tag name from GIT'
+	
+	doFirst {
+		if (project.hasProperty('demo4echo.designatedTagName') == false)
+		{
+			throw new GradleException("Missing 'demo4echo.designatedTagName' project property")
+		}
+	}
+	
+	doLast {
+		grgit.tag.remove {
+			names = [project.ext['demo4echo.designatedTagName']]
+		}
+		
+		println "Designated tag destroyed: ${project.ext['demo4echo.designatedTagName']}"
+	}
+}
+
+// Requires the use of "-Dorg.ajoberstar.grgit.auth.username" (with a proper token) for authentication
+task gitPush {
+	description = "Pushes current branch's committed changes to origin repo"
+	
+	doLast {
+		grgit.push {
+			tags = true
+//			dryRun = true
+		}
+	}
+}
+
+task gitPull {
+	description = "Pulls origin repo's committed changes to current branch"
+	
+	doLast {
+		grgit.pull {
+			rebase = true
+		}
+	}
+}
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
@@ -281,11 +412,29 @@ task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCl
 	helmTestAndClean.mustRunAfter helmUpdate
 }
 
-task tiran() {
-	description = "Prints the current branch name of the project"
+//
+// Works with org.ajoberstar.grgit plugin
+//
 
-	doLast {
-		def myVersion = manifestVersion()
-		println "This is my Version: [${myVersion}]"
+// Returns the current git branch name
+def obtainCurrentBranchName() {
+	return grgit.branch.current.name
+}
+
+// Builds a proper version name
+def manifestVersion() {
+	def currentBranchName = obtainCurrentBranchName()
+	return "${project.version}-${currentBranchName}"
+}
+
+// Construct an applicable namespace to be used by the Helm Chart
+def manifestNamespace() {
+	def namespace = obtainCurrentBranchName()
+
+	// If we are on the production or staging branches return the regular name ($serviceName), else return the branch namne itself
+	if (namespace == "${productionBranchName}" || namespace == "${stagingBranchName}") {
+		namespace = serviceName
 	}
+	
+	return namespace
 }
