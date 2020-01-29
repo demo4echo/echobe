@@ -404,7 +404,10 @@ task gitPush {
 	description = "Pushes current branch's committed changes to origin repo"
 	
 	doLast {
-		grgit.push()
+		grgit.push {
+			tags = true
+//			dryRun = true
+		}
 	}
 }
 
