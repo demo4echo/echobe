@@ -274,7 +274,7 @@ helm {
 
 	tiller {
 		// Don't install the server
-		install = false
+		install = true
 		
 		// Install/expect Tiller in a different namespace than kube-system
 //		namespace = "custom-namespace"
