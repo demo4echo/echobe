@@ -55,25 +55,7 @@ repositories {
 	// You can declare any Maven/Ivy/file repository here.
 	jcenter()
 }
-/**
-// In this section you declare the dependencies for your production and test code
-dependencies {
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
-	testCompile "junit:junit:${dep_junit_version}"
 
-    // The production code uses the SLF4J logging API at compile time
-	compile "org.slf4j:slf4j-api:${dep_slf4j_version}"
-
-	// gRPC
-	implementation "io.grpc:grpc-protobuf:${dep_grpc_version}"
-	implementation "io.grpc:grpc-stub:${dep_grpc_version}"
-	compileOnly "javax.annotation:javax.annotation-api:${dep_javax_annotation_version}"
-	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
-}
-*/
 // Configure protobuf
 protobuf {
 	protoc { 
@@ -380,7 +362,7 @@ task gitPull {
 		}
 	}
 }
-
+/**
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	dockerBuildAndPublish.mustRunAfter publishVersion
@@ -391,7 +373,7 @@ task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdat
 
 	helmTestAndClean.mustRunAfter helmUpdate
 }
-
+*/
 //
 // Works with org.ajoberstar.grgit plugin
 //

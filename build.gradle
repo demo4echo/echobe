@@ -69,4 +69,19 @@ dependencies {
 	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
+//
+// Load common build logic
+//
 apply from: 'common.gradle'
+
+// Master task that runs a complete flow (like the Jenkins Pipeline)
+task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+	dockerBuildAndPublish.mustRunAfter publishVersion
+
+	helmPackage.mustRunAfter dockerBuildAndPublish
+
+	helmUpdate.mustRunAfter helmPackage
+
+	helmTestAndClean.mustRunAfter helmUpdate
+}
+
