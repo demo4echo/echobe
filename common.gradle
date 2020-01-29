@@ -15,7 +15,7 @@ ext {
 }
 
 gradle.taskGraph.beforeTask { Task task ->
-	if (task.name == 'reckonTagCreate')) {
+	if (task.name == 'reckonTagCreate') {
 		println "Before reckonTagCreate"
 	} 
 	else {
