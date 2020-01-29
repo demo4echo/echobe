@@ -132,8 +132,9 @@ task printVersion
 project.description = 'The Echo Backend demo product'
 //project.version = originalProjectVersionObject.toString()
 project.version = project.version.toString()
+
+ext.originalProjectVersionObject = project.version
 ext.productVersion = manifestVersion()
-println "Just configured project version"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -308,8 +309,6 @@ task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 //
 
 helm {
-	println "Configurating Helm task with project version class: ${project.version.class}"
-	
 	home = file("${System.properties['user.home']}${File.separator}.helm")
 	debug = true
 
