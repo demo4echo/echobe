@@ -206,7 +206,9 @@ task dockerStart(dependsOn: ['dockerBuild','dockerRun'])
 // Forcing the version parameter to be a string (so it can be serialized) as it breaks the Helm tasks
 // It must be run before the Helm tasks
 task adjustProjectVersionToBeSerializable {
-	project.version = project.version.toString()
+	doFirst {
+		project.version = project.version.toString()
+	}
 }
 
 //
