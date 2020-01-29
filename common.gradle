@@ -33,7 +33,10 @@ ext {
 	productionBranchName = envVarsProps.PRODUCTION_BRANCH_NAME_ENV_VAR
 	stagingBranchName = envVarsProps.STAGING_BRANCH_NAME_ENV_VAR
 	dockerFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/Dockerfile"
+	'tiran.meltser' = 'golan'
 }
+
+println "print is ${'tiran.meltser'}"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
