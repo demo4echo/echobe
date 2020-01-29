@@ -101,7 +101,7 @@ task printVersion
 task stampVersion(dependsOn: reckonTagCreate)
 task publishVersion(dependsOn: reckonTagPush)
 
-// These properties must be defined after the reckon plugin is set up
+// These properties must be defined after the reckon plugin is set up!
 ext.originalProjectVersionObject = project.version
 ext.productVersion = manifestVersion()
 
@@ -443,7 +443,6 @@ task gitPull {
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-//task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	dockerBuildAndPublish.mustRunAfter publishVersion
 
 	helmPackage.mustRunAfter dockerBuildAndPublish
