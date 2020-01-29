@@ -86,19 +86,15 @@ project.beforeEvaluate { project ->
 //	}
 }
 
-/**
-tasks.whenTaskAdded { task ->
-	project.version = originalProjectVersionObject.toString() 
-}
+//tasks.whenTaskAdded { task ->
+//	project.version = originalProjectVersionObject.toString() 
+//}
 
 gradle.taskGraph.beforeTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
 		println "Before reckonTagCreate"
 		project.version = originalProjectVersionObject
 		println "First class is: ${project.version.class}"
-	}
-	else if (task.name == 'helmFilterEchobeChartSources') {
-		println "helmFilterEchobeChartSources project version class is: ${project.version.class}"
 	}
 }
 gradle.taskGraph.afterTask { Task task ->
@@ -108,7 +104,7 @@ gradle.taskGraph.afterTask { Task task ->
 		println "Last class is: ${project.version.class}"
 	} 
 }
-*/
+
 //
 // Versioning (must be the first plugin setup)
 //
