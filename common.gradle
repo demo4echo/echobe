@@ -20,6 +20,7 @@ gradle.afterProject { project ->
 	} 
 	else {
 		println "Evaluation of $project succeeded"
+		project.version = originalProjectVersionObject.toString() 
 	}
 }
 
