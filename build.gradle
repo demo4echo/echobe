@@ -15,6 +15,11 @@
  * ============================================================================
  */
 
+buildscript 
+{
+	apply from: 'common.gradle'
+}
+
 plugins
 {
 	// Core functionality
@@ -51,9 +56,3 @@ plugins
 	// Grgit plugin 
 	id 'org.ajoberstar.grgit'
 }
-
-buildscript 
-{
-	apply from: 'common.gradle'
-}
- 
