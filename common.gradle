@@ -69,8 +69,8 @@ reckon {
 
 // Reckon helpers
 task printVersion
-task stampVersion(dependsOn: reckonTagCreate)
-task publishVersion(dependsOn: reckonTagPush)
+//task stampVersion(dependsOn: reckonTagCreate)
+//task publishVersion(dependsOn: reckonTagPush)
 
 // Pre-Defined project properties
 project.description = 'The Echo Backend demo product'
