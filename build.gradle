@@ -366,7 +366,7 @@ task designatedTagCreate {
 	doFirst {
 		if (project.hasProperty('demo4echo.designatedTagName') == false)
 		{
-			throw new TaskExecutionException(this,new GradleException("Missing 'demo4echo.designatedTagName' project property"))
+			throw new GradleException("Missing 'demo4echo.designatedTagName' project property")
 		}
 	}
 	
