@@ -19,7 +19,10 @@ gradle.taskGraph.beforeTask { Task task ->
 		println "Before reckonTagCreate"
 		project.version = originalProjectVersionObject
 		println "First class is: ${project.version.class}"
-	} 
+	}
+	else if (task.name == 'helmFilterEchobeChartSources') {
+		println "helmFilterEchobeChartSources project version class is: ${project.version.class}"
+	}
 }
 gradle.taskGraph.afterTask { Task task ->
 	if (task.name == 'reckonTagCreate') {
