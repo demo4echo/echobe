@@ -400,6 +400,7 @@ task designatedTagDestroy {
 	}
 }
 
+// Requires the use of "-Dorg.ajoberstar.grgit.auth.username" (with a proper token) for authentication
 task gitPush {
 	description = "Pushes current branch's committed changes to origin repo"
 	
