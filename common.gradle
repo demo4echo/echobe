@@ -286,7 +286,7 @@ helm {
 //	}
 }
 
-helmPackage.doFirst {
+helmFilterEchobeChartSources.doFirst {
 	println "tiran is here"
 }
 
