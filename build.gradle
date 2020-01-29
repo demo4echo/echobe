@@ -411,6 +411,16 @@ task gitPush {
 	}
 }
 
+task gitPull {
+	description = "Pulls origin repo's committed changes to current branch"
+	
+	doLast {
+		grgit.pull {
+			rebase = true
+		}
+	}
+}
+
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	helmPackage.mustRunAfter dockerBuildAndPublish
