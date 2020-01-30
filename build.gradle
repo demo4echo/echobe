@@ -27,7 +27,7 @@ plugins
 	id 'eclipse'
 
 	// taskTree plugin
-	id 'com.dorongold.task-tree'
+//	id 'com.dorongold.task-tree'
 
 	// gradle-docker plugins
 	id 'com.palantir.docker'

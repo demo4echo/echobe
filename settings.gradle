@@ -18,7 +18,7 @@ include 'services:webservice'
 
 pluginManagement {
 	plugins {
-		id 'com.dorongold.task-tree' version "${plugin_com_dorongold_task_tree_version}"
+//		id 'com.dorongold.task-tree' version "${plugin_com_dorongold_task_tree_version}"
 		id 'com.palantir.docker' version "${plugin_com_palantir_docker_version}"
 		id 'com.palantir.docker-run' version "${plugin_com_palantir_docker_run_version}"
 		id 'org.unbroken-dome.helm' version "${plugin_org_unbroken_dome_helm_version}"
