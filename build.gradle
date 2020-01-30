@@ -77,6 +77,10 @@ file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 def	commonGradleFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/common.gradle"
 apply from: "${commonGradleFilePath}"
 
+//
+// Make specific adjustments
+//
+
 test {
 	// Setup additional environment variables
 	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
