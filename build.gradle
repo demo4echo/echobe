@@ -77,10 +77,10 @@ file("EnvFile.properties").withInputStream { envVarsProps.load(it) }
 def	commonGradleFilePath = "./${-> envVarsProps.JENKINS_SLAVE_K8S_COMMON_SUB_MODULE_NAME}/common.gradle"
 apply from: "${commonGradleFilePath}"
 
-test {
+//test {
 	// Setup additional environment variables
-	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",common.manifestNamespace())
-}
+//	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",common.manifestNamespace())
+//}
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
 task AIO (dependsOn: [publishVersion,dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
