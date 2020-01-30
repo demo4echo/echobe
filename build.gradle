@@ -92,13 +92,16 @@ test {
 	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
 }
 
-// Master task that runs a complete flow (like the Jenkins Pipeline)
-task AIO (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean,publishVersion]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
+// Master task that runs a complete flow, except publishing the version
+task DR (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndClean]) { // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
 	helmPackage.mustRunAfter dockerBuildAndPublish
 
 	helmUpdate.mustRunAfter helmPackage
 
 	helmTestAndClean.mustRunAfter helmUpdate
-	
-	publishVersion.mustRunAfter helmTestAndClean
+}
+
+// Master task that runs a complete flow (like the Jenkins Pipeline)
+task AIO (dependsOn: [DR,publishVersion]) {
+	publishVersion.mustRunAfter DR
 }
