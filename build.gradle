@@ -79,7 +79,7 @@ apply from: "${commonGradleFilePath}"
 
 test {
 	// Setup additional environment variables
-	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",common.manifestNamespace())
+	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
