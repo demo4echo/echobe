@@ -81,6 +81,12 @@ apply from: "${commonGradleFilePath}"
 // Make specific adjustments
 //
 
+jar {
+	manifest {
+		attributes "Main-Class": productMainClass
+	}
+}
+
 test {
 	// Setup additional environment variables
 	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
