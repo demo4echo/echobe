@@ -1,4 +1,4 @@
 [submodule "EchoCommon"]
 	path = EchoCommon
-	url = https://github.com/tmeltser/EchoCommon
+	url = https://github.com/demo4echo/EchoCommon.git
 	branch = master
