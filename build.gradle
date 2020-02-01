@@ -70,7 +70,7 @@ dependencies {
 }
 
 // Load common build logic
-def	commonGradleFilePath = "./${-> commonSubModuleName}/common.gradle"
+def	commonGradleFilePath = "${-> commonSubModuleName}${File.separator}common.gradle"
 apply from: "${commonGradleFilePath}"
 
 //
