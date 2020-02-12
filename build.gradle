@@ -69,6 +69,9 @@ dependencies {
 	runtimeOnly "io.grpc:grpc-netty-shaded:${dep_grpc_version}"
 }
 
+// Pre-Defined project properties
+project.description = 'The Echo Backend demo product'
+
 // Load common build logic
 def	commonGradleFilePath = "${-> commonSubModuleName}${File.separator}common.gradle"
 apply from: "${commonGradleFilePath}"
