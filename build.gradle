@@ -20,7 +20,7 @@ plugins
 	// Core functionality
 	id 'base'
  	
-   // Apply the java plugin to add support for Java
+	// Apply the java plugin to add support for Java
 	id 'java'
 
 	// Apply the eclipse plugin to add support for Eclipse
