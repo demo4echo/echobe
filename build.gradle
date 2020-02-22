@@ -104,3 +104,14 @@ task DR (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCle
 task AIO (dependsOn: [DR,publishVersion]) {
 	publishVersion.mustRunAfter DR
 }
+
+task tiran {
+	doLast {
+		// Get commit id of HEAD.
+		def gitRevision = grgit.head().id
+    	// Get abbreviated commit Id of HEAD
+    	def gitAbbRevision = git.head().abbreviatedId
+    	
+    	println "gitRevision: [${gitRevision}], gitAbbRevision: [${gitAbbRevision}]"	
+	}	
+}
