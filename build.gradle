@@ -110,7 +110,7 @@ task tiran {
 		// Get commit id of HEAD.
 		def gitRevision = grgit.head().id
     	// Get abbreviated commit Id of HEAD
-    	def gitAbbRevision = git.head().abbreviatedId
+    	def gitAbbRevision = grgit.head().abbreviatedId
     	
     	println "gitRevision: [${gitRevision}], gitAbbRevision: [${gitAbbRevision}]"	
 	}	
