@@ -6,4 +6,3 @@ appVersion: ${appVersion}
 maintainers:
   - name: ${maintainer.name}
     email: ${maintainer.email}
-
