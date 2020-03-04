@@ -1,4 +1,1 @@
-EnvFile.properties merge=ours
-gradle.properties merge=ours
-/.docker/** merge=ours
-/.kube/** merge=ours
+branchSpecificConfig.properties merge=ours
