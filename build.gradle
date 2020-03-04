@@ -73,7 +73,7 @@ dependencies {
 project.description = 'The Echo Backend demo product'
 
 // Load common build logic
-def	commonGradleFilePath = "${-> commonSubModuleName}${File.separator}common.gradle"
+def	commonGradleFilePath = "${-> common_sub_module_name}${File.separator}common.gradle"
 apply from: "${commonGradleFilePath}"
 
 //
