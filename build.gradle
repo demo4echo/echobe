@@ -19,7 +19,7 @@ import org.ajoberstar.grgit.Person
 
 buildscript {
 	dependencies {
-		classpath 'org.ajoberstar:grgit:1.7.2'
+		classpath group:'org.ajoberstar',name:'grgit',version:'1.7.2'
 	}
 }
 
