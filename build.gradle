@@ -14,19 +14,7 @@
  * https://docs.gradle.org/current/userguide/tutorial_java_projects.html
  * ============================================================================
  */
-/**
-import org.ajoberstar.grgit.Person
 
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-    
-	dependencies {
-		classpath group:'org.ajoberstar',name:'grgit',version:'1.7.2'
-	}
-}
-*/
 plugins
 {
 	// Core functionality
