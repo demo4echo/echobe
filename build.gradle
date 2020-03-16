@@ -104,9 +104,3 @@ task DR (dependsOn: [dockerBuildAndPublish,helmPackage,helmUpdate,helmTestAndCle
 task AIO (dependsOn: [DR,publishVersion]) {
 	publishVersion.mustRunAfter DR
 }
-
-task tiran {
-	doLast {
-		println "Check this: [${project.rootProject.rootDir}]"
-	}
-}
