@@ -91,21 +91,25 @@ test {
 	environment.put("ECHOBE_SERVICE_ENDPOINT_NAMESPACE",manifestNamespace())
 }
 
+// The DR task (below) should be invoked on feature/defect branches only!
+gradle.taskGraph.beforeTask { Task task ->
+	if (task.name == 'DR') {
+		def isDevEnv = isDevelopmentEnvironment()
+		println "Is DevEnv: [${isDevEnv}]"
+		if (isDevelopmentEnvironment() == false) {
+			throw new GradleException("The ${task.name} task is allowed to run only within development environment (feature/defect branches)")
+		}
+	}
+}
+
 // Master task that runs a complete flow, except publishing the version and the artifacts
 // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-// This task should be invoked on feature/defect branches only!
 task DR (dependsOn: [dockerTag,helmPackage,helmUpdate,helmTestAndClean]) {
 	helmPackage.mustRunAfter dockerTag
 
 	helmUpdate.mustRunAfter helmPackage
 
 	helmTestAndClean.mustRunAfter helmUpdate
-	
-	doFirst {
-		if (isDevelopmentEnvironment() == false)	{
-			throw new GradleException("This task is allowed to run only within development environment (feature/defect branches)")
-		}
-	}	
 }
 
 // Master task that runs a complete flow (like the Jenkins Pipeline)
