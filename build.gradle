@@ -93,7 +93,7 @@ test {
 
 // Master task that runs a complete flow, except publishing the version and the artifacts
 // Task 'certify' can NOT run as it can only be executed WITHIN the cluster!
-task DR (dependsOn: [dockerBuildTag,helmPackage,helmUpdate,helmTestAndClean]) {
+task DR (dependsOn: [dockerTag,helmPackage,helmUpdate,helmTestAndClean]) {
 	helmPackage.mustRunAfter dockerTag
 
 	helmUpdate.mustRunAfter helmPackage
