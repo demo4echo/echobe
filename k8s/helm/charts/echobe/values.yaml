@@ -9,8 +9,8 @@ image:
   repository: "${imageRepository}"
 #  tag: stable
   tag: "${imageTag}"
-#  pullPolicy: IfNotPresent
-  pullPolicy: Always
+#  pullPolicy: IfNotPresent/Always
+  pullPolicy: "${imagePullPolicy}"
 
 nameOverride: ""
 fullnameOverride: ""
